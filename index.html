@@ -10,9 +10,9 @@
   --bg:#070c10;--panel:#0c1219;--panel2:#101820;
   --border:#182430;--border2:#1e3040;
   --blue:#00b4ff;--teal:#00e5c8;
-  --green:#00e676;--green2:rgba(0,230,118,.18);
-  --red:#ff3b3b;--red2:rgba(255,59,59,.18);
-  --gray:#546878;--gray2:rgba(84,104,120,.15);
+  --green:#00e676;
+  --red:#ff3b3b;
+  --gray:#546878;
   --yellow:#ffc400;
   --txt-hi:#ddeeff;--txt-md:#6a90aa;--txt-lo:#2d4a5a;
   --pipe-off:#112030;
@@ -46,13 +46,15 @@ header{display:flex;align-items:center;justify-content:space-between;
 #clock{font-family:var(--fmono);font-size:14px;color:var(--teal);letter-spacing:2px}
 
 /* ── SIM BAR ── */
-.simbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-  padding:8px 24px;background:rgba(10,18,26,.9);border-bottom:1px solid var(--border);}
-.sim-lbl{font-family:var(--ftitle);font-size:10px;letter-spacing:3px;color:var(--txt-lo);text-transform:uppercase;margin-right:4px}
-.sbtn{font-family:var(--fmono);font-size:10px;padding:4px 12px;border-radius:2px;
+.simbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:7px 22px;background:rgba(10,18,26,.95);border-bottom:1px solid var(--border);}
+.sim-lbl{font-family:var(--ftitle);font-size:10px;letter-spacing:3px;color:var(--txt-lo);
+  text-transform:uppercase;margin-right:3px;white-space:nowrap}
+.sbtn{font-family:var(--fmono);font-size:10px;padding:4px 10px;border-radius:2px;
   border:1px solid var(--border2);background:transparent;color:var(--txt-md);cursor:pointer;
-  letter-spacing:.5px;transition:all .2s;}
+  letter-spacing:.5px;transition:all .2s;white-space:nowrap}
 .sbtn:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,180,255,.06)}
+.sim-sep{width:1px;height:20px;background:var(--border2);margin:0 3px;flex-shrink:0}
 
 /* ── MAIN ── */
 main{padding:18px 22px;max-width:1440px;margin:0 auto}
@@ -81,8 +83,8 @@ main{padding:18px 22px;max-width:1440px;margin:0 auto}
 .stations{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
 @media(max-width:860px){.stations{grid-template-columns:1fr}}
 .scard{background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:border-color .4s}
-.scard.fault{border-color:rgba(255,59,59,.4)}
-.scard.running{border-color:rgba(0,230,118,.25)}
+.scard.fault  {border-color:rgba(255,59,59,.45)}
+.scard.running{border-color:rgba(0,230,118,.3)}
 .scard-header{display:flex;align-items:center;justify-content:space-between;
   padding:11px 16px;background:var(--panel2);border-bottom:1px solid var(--border);}
 .scard-name{font-family:var(--ftitle);font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase}
@@ -94,17 +96,18 @@ main{padding:18px 22px;max-width:1440px;margin:0 auto}
 .diagram svg{width:100%;height:auto;overflow:visible;display:block}
 
 /* ── Pipe animations ── */
-.pipe-flow{stroke:var(--pipe-off);stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:12 8;stroke-dashoffset:0}
+.pipe-flow{stroke:var(--pipe-off);stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:12 8;stroke-dashoffset:0;transition:stroke .35s}
 .pipe-flow.fg{stroke:var(--green);animation:flowA .9s linear infinite}
 .pipe-flow.fb{stroke:var(--blue); animation:flowA .7s linear infinite}
 .pipe-flow.fr{stroke:var(--red);  animation:flowA .4s linear infinite}
 @keyframes flowA{to{stroke-dashoffset:-40}}
 
-/* ── Pump states ── */
+/* ── Pump group states ── */
 .pump-g .p-body{transition:filter .35s;filter:none}
 .pump-g.s-green  .p-body{filter:drop-shadow(0 0 9px var(--green))}
 .pump-g.s-red    .p-body{filter:drop-shadow(0 0 9px var(--red))}
-.pump-g.s-yellow .p-body{filter:drop-shadow(0 0 9px var(--yellow))}
+.pump-g.s-yellow .p-body{filter:drop-shadow(0 0 7px var(--yellow))}
 .pump-g .p-fill{transition:fill .35s;fill:var(--gray)}
 .pump-g.s-green  .p-fill{fill:var(--green)}
 .pump-g.s-red    .p-fill{fill:var(--red)}
@@ -112,68 +115,59 @@ main{padding:18px 22px;max-width:1440px;margin:0 auto}
 .pump-g .p-spin{transform-origin:center center}
 .pump-g.s-green  .p-spin{animation:spin .9s linear infinite}
 .pump-g.s-red    .p-spin{animation:spin .35s linear infinite}
-.pump-g.s-gray   .p-spin{animation:none}
-.pump-g.s-yellow .p-spin{animation:none}
+.pump-g.s-gray   .p-spin,.pump-g.s-yellow .p-spin{animation:none}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-/* ── Runtime timer under pump label ── */
-.pump-runtime{font-family:var(--fmono);font-size:9px;fill:#2d5a7a;text-anchor:middle}
-.pump-runtime.active{fill:var(--teal)}
-
-/* ── Tank water ── */
-.tank-water{transition:y .8s ease,height .8s ease,fill .5s}
 
 /* ── IO TABLE ── */
 .iotable{margin:0 12px 12px;border:1px solid var(--border);border-radius:3px;overflow:hidden}
-.iohead{display:grid;grid-template-columns:50px 1fr 76px 62px;
+.iohead{display:grid;grid-template-columns:52px 1fr 76px 46px;
   background:var(--panel2);border-bottom:1px solid var(--border);padding:5px 12px;}
 .iocl{font-family:var(--ftitle);font-size:9px;letter-spacing:3px;color:var(--txt-lo);text-transform:uppercase}
-.iorow{display:grid;grid-template-columns:50px 1fr 76px 62px;
+.iorow{display:grid;grid-template-columns:52px 1fr 76px 46px;
   padding:6px 12px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;}
 .iorow:last-child{border-bottom:none}
 .iorow:hover{background:rgba(0,180,255,.03)}
 .iotag{font-family:var(--fmono);font-size:11px;color:var(--blue)}
+.iotag.out {color:var(--green)}
+.iotag.sens{color:var(--teal)}
 .iodesc{font-family:var(--fbody);font-size:11px;color:var(--txt-md)}
 .iobadge{display:inline-block;padding:2px 8px;border-radius:2px;
-  font-family:var(--fmono);font-size:9px;letter-spacing:.5px;text-align:center;}
-.b-on {background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.3)}
-.b-off{background:rgba(255,255,255,.03);color:var(--txt-lo);border:1px solid var(--border)}
-.b-err{background:rgba(255,59,59,.1);color:var(--red);border:1px solid rgba(255,59,59,.3)}
-.b-warn{background:rgba(255,196,0,.1);color:var(--yellow);border:1px solid rgba(255,196,0,.3)}
+  font-family:var(--fmono);font-size:9px;letter-spacing:.5px;text-align:center}
+.b-on  {background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.3)}
+.b-off {background:rgba(255,255,255,.03);color:var(--txt-lo);border:1px solid var(--border)}
+.b-err {background:rgba(255,59,59,.1);color:var(--red);border:1px solid rgba(255,59,59,.3)}
 
 /* ── CHIP ROW ── */
 .chiprow{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px 12px}
 .chip{display:flex;align-items:center;gap:8px;padding:7px 12px;
-  background:var(--panel2);border:1px solid var(--border);border-radius:3px;flex:1;min-width:125px;transition:border-color .35s;}
+  background:var(--panel2);border:1px solid var(--border);border-radius:3px;
+  flex:1;min-width:120px;transition:border-color .35s}
 .chip.s-green {border-color:rgba(0,230,118,.3)}
 .chip.s-red   {border-color:rgba(255,59,59,.3)}
 .chip.s-yellow{border-color:rgba(255,196,0,.3)}
 .chip-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all .35s}
 .chip.s-green  .chip-dot{background:var(--green);box-shadow:0 0 8px var(--green)}
 .chip.s-red    .chip-dot{background:var(--red);box-shadow:0 0 8px var(--red);animation:blink 1s step-end infinite}
-.chip.s-yellow .chip-dot{background:var(--yellow);box-shadow:0 0 8px var(--yellow);animation:blink 1.5s step-end infinite}
+.chip.s-yellow .chip-dot{background:var(--yellow);box-shadow:0 0 6px var(--yellow);animation:blink 1.8s step-end infinite}
 .chip.s-gray   .chip-dot{background:var(--gray)}
-.chip-name{font-family:var(--ftitle);font-size:10px;letter-spacing:1px;color:var(--txt-md);text-transform:uppercase}
-.chip-state{font-family:var(--ftitle);font-weight:700;font-size:13px;letter-spacing:.5px}
+.chip-name {font-family:var(--ftitle);font-size:10px;letter-spacing:1px;color:var(--txt-md);text-transform:uppercase}
+.chip-state{font-family:var(--ftitle);font-weight:700;font-size:12px;letter-spacing:.5px}
 .chip.s-green  .chip-state{color:var(--green)}
 .chip.s-red    .chip-state{color:var(--red)}
 .chip.s-yellow .chip-state{color:var(--yellow)}
 .chip.s-gray   .chip-state{color:var(--gray)}
-.chip-runtime{font-family:var(--fmono);font-size:9px;color:var(--txt-lo);margin-top:2px;letter-spacing:.5px}
+.chip-runtime{font-family:var(--fmono);font-size:9px;color:var(--txt-lo);margin-top:2px}
 .chip.s-green .chip-runtime{color:var(--teal)}
 
 /* ── LEGEND ── */
-.legend{display:flex;gap:16px;flex-wrap:wrap;padding:8px 12px;
-  border-top:1px solid var(--border);background:var(--panel2);}
+.legend{display:flex;gap:14px;flex-wrap:wrap;padding:8px 12px;
+  border-top:1px solid var(--border);background:var(--panel2)}
 .leg{display:flex;align-items:center;gap:6px}
-.legdot{width:8px;height:8px;border-radius:50%}
-.legdot.green{background:var(--green);box-shadow:0 0 5px var(--green)}
-.legdot.red{background:var(--red);box-shadow:0 0 5px var(--red)}
-.legdot.gray{background:var(--gray)}
+.legdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .legtxt{font-family:var(--fbody);font-size:10px;color:var(--txt-md)}
 
 footer{text-align:center;padding:14px;font-family:var(--fmono);font-size:9px;
-  color:var(--txt-lo);letter-spacing:2px;border-top:1px solid var(--border);margin-top:8px;}
+  color:var(--txt-lo);letter-spacing:2px;border-top:1px solid var(--border);margin-top:8px}
 </style>
 </head>
 <body>
@@ -194,29 +188,43 @@ footer{text-align:center;padding:14px;font-family:var(--fmono);font-size:9px;
   </div>
 </header>
 
+<!-- SIM BAR -->
 <div class="simbar">
-  <span class="sim-lbl">Simular →</span>
-  <button class="sbtn" onclick="sc('all-run')">▶ Todas activas</button>
-  <button class="sbtn" onclick="sc('all-fault')">⚠ Todas en falla</button>
-  <button class="sbtn" onclick="sc('standby')">◼ En espera</button>
-  <button class="sbtn" onclick="sc('disabled')">🔶 Deshabilitadas</button>
-  <button class="sbtn" onclick="sc('mixed')">⇄ Mixto</button>
-  <button class="sbtn" onclick="sc('rio-fault')">⚡ Falla Río</button>
-  <button class="sbtn" onclick="sc('cis-fault')">⚡ Falla Cisterna</button>
-  <span class="sim-lbl" style="margin-left:8px">Cisterna →</span>
+  <span class="sim-lbl">Río →</span>
+  <button class="sbtn" onclick="sc('r-both')">▶ B1+B2 ON</button>
+  <button class="sbtn" onclick="sc('r-b1')">B1 solo</button>
+  <button class="sbtn" onclick="sc('r-b2')">B2 solo</button>
+  <button class="sbtn" onclick="sc('r-fault')">⚡ Falla</button>
+  <button class="sbtn" onclick="sc('r-standby')">◼ Espera</button>
+  <button class="sbtn" onclick="sc('r-dis')">🔶 Deshab.</button>
+  <div class="sim-sep"></div>
+  <span class="sim-lbl">Cis →</span>
+  <button class="sbtn" onclick="sc('c-both')">▶ A+B ON</button>
+  <button class="sbtn" onclick="sc('c-A')">A solo</button>
+  <button class="sbtn" onclick="sc('c-B')">B solo</button>
+  <button class="sbtn" onclick="sc('c-fault')">⚡ Falla</button>
+  <button class="sbtn" onclick="sc('c-standby')">◼ Espera</button>
+  <div class="sim-sep"></div>
+  <span class="sim-lbl">Río Nivel →</span>
+  <button class="sbtn" onclick="setIcr(0)">🔴 Bajo</button>
+  <button class="sbtn" onclick="setIcr(1)">🟢 Óptimo</button>
+  <div class="sim-sep"></div>
+  <span class="sim-lbl">Cisterna →</span>
   <button class="sbtn" onclick="setLevel(0,0)">🔴 Vacía</button>
   <button class="sbtn" onclick="setLevel(1,0)">🔵 Media</button>
   <button class="sbtn" onclick="setLevel(1,1)">🟢 Llena</button>
-  <button class="sbtn" onclick="setLevel(0,1)">⚠ Error nivel</button>
+  <button class="sbtn" onclick="setLevel(0,1)">⚠ Error</button>
 </div>
 
 <main>
+  <!-- ALERT -->
   <div class="alertbar" id="alertbar">
     <span class="alert-ico">⚠</span>
     <span class="alert-txt" id="alerttxt"></span>
     <span class="alert-time" id="alerttime"></span>
   </div>
 
+  <!-- METRICS -->
   <div class="sec">Resumen del sistema</div>
   <div class="metrics">
     <div class="mcard">
@@ -227,423 +235,496 @@ footer{text-align:center;padding:14px;font-family:var(--fmono);font-size:9px;
     <div class="mcard">
       <div class="mlbl">Potencia operando</div>
       <div class="mval" id="m-power">0</div>
-      <div class="munit">HP total estimado</div>
+      <div class="munit">HP estimado</div>
     </div>
     <div class="mcard">
       <div class="mlbl">Fallas activas</div>
-      <div class="mval" id="m-faults" style="color:var(--txt-hi)">0</div>
+      <div class="mval" id="m-faults">0</div>
       <div class="munit">alarmas</div>
     </div>
     <div class="mcard">
       <div class="mlbl">Gateway Río</div>
       <div class="mval" style="font-size:13px;margin-top:4px;color:var(--green)">ONLINE</div>
-      <div class="munit">pasodelastropasrio · RPi-001</div>
+      <div class="munit">RPi-001 · pasodelastropasrio</div>
     </div>
     <div class="mcard">
       <div class="mlbl">Gateway Cisterna</div>
       <div class="mval" style="font-size:13px;margin-top:4px;color:var(--green)">ONLINE</div>
-      <div class="munit">pasodelastropascisterna · RPi-002</div>
+      <div class="munit">RPi-002 · pasodelastropascisterna</div>
     </div>
     <div class="mcard">
       <div class="mlbl">Último refresco</div>
       <div class="mval" id="m-ts" style="font-size:12px;margin-top:6px">--:--:--</div>
-      <div class="munit">InfluxDB / Grafana Alloy</div>
+      <div class="munit">InfluxDB · Grafana Alloy</div>
     </div>
   </div>
 
+  <!-- STATIONS -->
   <div class="sec">Puntos de bombeo</div>
   <div class="stations">
 
-    <!-- ══════════════════════════════════
-         ESTACIÓN RÍO
-    ══════════════════════════════════ -->
-    <div class="scard" id="card-rio">
-      <div class="scard-header">
-        <div>
-          <div class="scard-name">Estación Río</div>
-          <div class="scard-id">pasodelastropasrio · RPi-001 · Siemens Logo!</div>
-        </div>
-        <div class="scard-ping" id="ping-rio">Ping: -- ms</div>
+  <!-- ══════════════════════════════════════════════════
+       ESTACIÓN RÍO
+       I1 = falla común  |  I3 = habilitación común
+       Q1 = Bomba Sumergible 1
+       Q2 = Bomba Sumergible 2
+       Icr = nivel toma de río
+  ══════════════════════════════════════════════════ -->
+  <div class="scard" id="card-rio">
+    <div class="scard-header">
+      <div>
+        <div class="scard-name">Estación Río</div>
+        <div class="scard-id">pasodelastropasrio · RPi-001 · Siemens Logo! · Q1=Bomba1 · Q2=Bomba2</div>
       </div>
+      <div class="scard-ping" id="ping-rio">Ping: -- ms</div>
+    </div>
 
-      <div class="diagram">
-      <svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#08141e"/><stop offset="100%" stop-color="#0a1c2c"/>
-          </linearGradient>
-          <linearGradient id="gGnd" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0c1e0e"/><stop offset="100%" stop-color="#07130a"/>
-          </linearGradient>
-          <linearGradient id="gRiv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0d3a60"/><stop offset="100%" stop-color="#07243c"/>
-          </linearGradient>
-        </defs>
+    <div class="diagram">
+    <svg viewBox="0 0 540 272" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#08141e"/><stop offset="100%" stop-color="#0a1c2c"/>
+        </linearGradient>
+        <linearGradient id="gGnd" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0c1e0e"/><stop offset="100%" stop-color="#07130a"/>
+        </linearGradient>
+      </defs>
 
-        <!-- BG -->
-        <rect x="0" y="0" width="540" height="270" fill="url(#gSky)"/>
-        <rect x="0" y="155" width="540" height="115" fill="url(#gGnd)"/>
-        <path d="M0,155 Q135,148 270,154 Q405,160 540,152" stroke="#142a1a" stroke-width="1.5" fill="none"/>
+      <!-- BG -->
+      <rect width="540" height="272" fill="url(#gSky)"/>
+      <rect y="156" width="540" height="116" fill="url(#gGnd)"/>
+      <path d="M0,156 Q135,149 270,155 Q405,161 540,153" stroke="#142a1a" stroke-width="1.5" fill="none"/>
 
-        <!-- River -->
-        <path d="M0,118 Q55,108 110,118 Q170,128 230,115 Q260,110 290,120 L290,200 L0,200 Z" fill="url(#gRiv)" opacity=".65"/>
-        <path d="M15,135 Q50,130 85,135" stroke="#1a5a8a" stroke-width="1" fill="none" opacity=".5"/>
-        <path d="M30,145 Q75,140 120,145" stroke="#1a5a8a" stroke-width="1" fill="none" opacity=".4"/>
-        <text x="14" y="126" font-family="'Rajdhani'" font-size="11" fill="#1a5a80" letter-spacing="3">RÍO</text>
+      <!-- River base -->
+      <path id="riverBase" d="M0,119 Q60,109 115,119 Q175,130 235,116 Q262,111 292,121 L292,201 L0,201 Z" fill="#07243c" opacity=".98"/>
+      <!-- River color fill — JS drives fill+opacity via Icr -->
+      <path id="riverFill" d="M0,119 Q60,109 115,119 Q175,130 235,116 Q262,111 292,121 L292,201 L0,201 Z" fill="#0d3a60" opacity=".65" style="transition:fill .7s,opacity .7s"/>
+      <!-- ripples -->
+      <path d="M12,139 Q52,134 90,139" stroke="#1a5a8a" stroke-width="1" fill="none" opacity=".45"/>
+      <path d="M28,150 Q72,145 118,150" stroke="#1a5a8a" stroke-width="1" fill="none" opacity=".3"/>
 
-        <!-- ── CAÑO DE ENTRADA → right ── -->
-        <!-- Horizontal main pipe top -->
-        <line x1="185" y1="50" x2="540" y2="50" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="rPipeMain" x1="185" y1="50" x2="540" y2="50" stroke-width="5"/>
-        <text x="340" y="42" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" letter-spacing="2">CAÑO DE ENTRADA →</text>
+      <!-- Icr sensor -->
+      <line x1="32" y1="101" x2="32" y2="119" stroke="#1a3548" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <circle id="sensorIcr" cx="32" cy="119" r="5" fill="#2d5a7a" stroke="#1e3040" stroke-width="1" style="transition:fill .5s,filter .5s"/>
+      <rect x="8" y="89" width="48" height="14" rx="2" fill="#0d1c28" stroke="#1e3040" stroke-width="1"/>
+      <text id="lblIcr" x="32" y="99" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle" style="transition:fill .4s">Icr=1</text>
+      <text id="riverLvLbl" x="160" y="135" font-family="'Rajdhani'" font-size="11" fill="#1a5a80" text-anchor="middle" letter-spacing="2" style="transition:fill .5s">NIVEL RÍO</text>
 
-        <!-- T-junction -->
-        <circle cx="185" cy="50" r="8" fill="#162535" stroke="#243548" stroke-width="1.5"/>
-        <text x="185" y="38" font-family="'Rajdhani'" font-size="8" fill="#2d5a7a" text-anchor="middle">CONEXIÓN-T</text>
+      <!-- ── CAÑO DE ENTRADA → (shared header pipe) ── -->
+      <!-- background track -->
+      <line x1="185" y1="50" x2="540" y2="50" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <!-- Two overlapping flow layers: one per pump. Layer 1 (B1/Q1) is drawn first, Layer 2 (B2/Q2) on top semi-transparent -->
+      <line class="pipe-flow" id="rHdr1" x1="185" y1="50" x2="540" y2="50" stroke-width="5"/>
+      <line class="pipe-flow" id="rHdr2" x1="185" y1="50" x2="540" y2="50" stroke-width="5" style="opacity:.75"/>
+      <text x="330" y="41" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" letter-spacing="2">CAÑO DE ENTRADA →</text>
 
-        <!-- ── BOMBA SUMERGIBLE 1 ── -->
-        <!-- Riser pipe 1 -->
-        <line x1="125" y1="50" x2="185" y2="50" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="rPipe1H" x1="125" y1="50" x2="177" y2="50" stroke-width="5"/>
-        <line x1="125" y1="50" x2="125" y2="95" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="rPipe1V" x1="125" y1="50" x2="125" y2="94" stroke-width="5"/>
-        <!-- Casing -->
-        <rect x="117" y="94" width="16" height="115" rx="2" fill="#0a1820" stroke="#1a3040" stroke-width="1"/>
-        <rect x="113" y="91" width="24" height="8" rx="2" fill="#142230" stroke="#1e3245" stroke-width="1"/>
-        <!-- Pump body -->
-        <g class="pump-g s-gray" id="pump-rio-1">
-          <g class="p-body" transform="translate(125,172)">
-            <!-- Screen -->
-            <rect x="-7" y="16" width="14" height="10" rx="1" fill="#0d1e2e" stroke="#1a3040" stroke-width="1"/>
-            <line x1="-4" y1="18" x2="-4" y2="24" stroke="#1a3040" stroke-width="1"/>
-            <line x1="0"  y1="18" x2="0"  y2="24" stroke="#1a3040" stroke-width="1"/>
-            <line x1="4"  y1="18" x2="4"  y2="24" stroke="#1a3040" stroke-width="1"/>
-            <!-- Barrel -->
-            <rect x="-10" y="-6" width="20" height="22" rx="3" class="p-fill"/>
-            <!-- Motor -->
-            <rect x="-9" y="-20" width="18" height="16" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
-            <!-- Impeller -->
-            <g class="p-spin" style="transform-origin:0px -12px">
-              <line x1="-7" y1="-12" x2="7" y2="-12" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="0" y1="-19" x2="0" y2="-5" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-5" y1="-17" x2="5" y2="-7" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="5" y1="-17" x2="-5" y2="-7" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
+      <!-- T-junction -->
+      <circle cx="185" cy="50" r="9" fill="#162535" stroke="#243548" stroke-width="2"/>
+      <text x="185" y="37" font-family="'Rajdhani'" font-size="8" fill="#2d5a7a" text-anchor="middle">CONEXIÓN-T</text>
+
+      <!-- ── BOMBA SUMERGIBLE 1 · Q1 ── -->
+      <!-- riser 1 track -->
+      <line x1="125" y1="50" x2="185" y2="50" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line x1="125" y1="50" x2="125" y2="96" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <!-- riser 1 flow -->
+      <line class="pipe-flow" id="rP1H" x1="125" y1="50" x2="177" y2="50" stroke-width="5"/>
+      <line class="pipe-flow" id="rP1V" x1="125" y1="96" x2="125" y2="50" stroke-width="5"/>
+      <!-- casing -->
+      <rect x="117" y="95" width="16" height="116" rx="2" fill="#0a1820" stroke="#1a3040" stroke-width="1"/>
+      <rect x="113" y="92" width="24" height="8"   rx="2" fill="#142230" stroke="#1e3245" stroke-width="1"/>
+      <!-- pump body -->
+      <g class="pump-g s-gray" id="pump-rio-1">
+        <g class="p-body" transform="translate(125,174)">
+          <rect x="-7" y="16" width="14" height="10" rx="1" fill="#0d1e2e" stroke="#1a3040" stroke-width="1"/>
+          <line x1="-4" y1="18" x2="-4" y2="24" stroke="#1a3040" stroke-width="1"/>
+          <line x1="0"  y1="18" x2="0"  y2="24" stroke="#1a3040" stroke-width="1"/>
+          <line x1="4"  y1="18" x2="4"  y2="24" stroke="#1a3040" stroke-width="1"/>
+          <rect x="-10" y="-6" width="20" height="22" rx="3" class="p-fill"/>
+          <rect x="-9"  y="-21" width="18" height="16" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
+          <g class="p-spin" style="transform-origin:0px -13px">
+            <line x1="-7" y1="-13" x2="7" y2="-13" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="0"  y1="-20" x2="0" y2="-6"  stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-5" y1="-18" x2="5" y2="-8"  stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="5"  y1="-18" x2="-5" y2="-8" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
           </g>
-          <text x="125" y="218" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. SUMERGIBLE 1</text>
-          <text x="125" y="229" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">20 HP · I1·I3·Q1</text>
-          <text id="svgrt-r1" x="125" y="240" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
         </g>
+        <text x="125" y="219" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. SUMERGIBLE 1</text>
+        <text x="125" y="230" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">20 HP · Q1</text>
+        <text id="svgrt-r1" x="125" y="241" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
+      </g>
 
-        <!-- ── BOMBA SUMERGIBLE 2 ── -->
-        <line x1="245" y1="50" x2="185" y2="50" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="rPipe2H" x1="245" y1="50" x2="193" y2="50" stroke-width="5"/>
-        <line x1="245" y1="50" x2="245" y2="95" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="rPipe2V" x1="245" y1="50" x2="245" y2="94" stroke-width="5"/>
-        <rect x="237" y="94" width="16" height="115" rx="2" fill="#0a1820" stroke="#1a3040" stroke-width="1"/>
-        <rect x="233" y="91" width="24" height="8" rx="2" fill="#142230" stroke="#1e3245" stroke-width="1"/>
-        <g class="pump-g s-gray" id="pump-rio-2">
-          <g class="p-body" transform="translate(245,172)">
-            <rect x="-7" y="16" width="14" height="10" rx="1" fill="#0d1e2e" stroke="#1a3040" stroke-width="1"/>
-            <line x1="-4" y1="18" x2="-4" y2="24" stroke="#1a3040" stroke-width="1"/>
-            <line x1="0"  y1="18" x2="0"  y2="24" stroke="#1a3040" stroke-width="1"/>
-            <line x1="4"  y1="18" x2="4"  y2="24" stroke="#1a3040" stroke-width="1"/>
-            <rect x="-10" y="-6" width="20" height="22" rx="3" class="p-fill"/>
-            <rect x="-9" y="-20" width="18" height="16" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
-            <g class="p-spin" style="transform-origin:0px -12px">
-              <line x1="-7" y1="-12" x2="7" y2="-12" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="0" y1="-19" x2="0" y2="-5" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-5" y1="-17" x2="5" y2="-7" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="5" y1="-17" x2="-5" y2="-7" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
+      <!-- ── BOMBA SUMERGIBLE 2 · Q2 ── -->
+      <!-- riser 2 track -->
+      <line x1="245" y1="50" x2="185" y2="50" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line x1="245" y1="50" x2="245" y2="96" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <!-- riser 2 flow -->
+      <line class="pipe-flow" id="rP2H" x1="245" y1="50" x2="193" y2="50" stroke-width="5"/>
+      <line class="pipe-flow" id="rP2V" x1="245" y1="96" x2="245" y2="50" stroke-width="5"/>
+      <!-- casing -->
+      <rect x="237" y="95" width="16" height="116" rx="2" fill="#0a1820" stroke="#1a3040" stroke-width="1"/>
+      <rect x="233" y="92" width="24" height="8"   rx="2" fill="#142230" stroke="#1e3245" stroke-width="1"/>
+      <!-- pump body -->
+      <g class="pump-g s-gray" id="pump-rio-2">
+        <g class="p-body" transform="translate(245,174)">
+          <rect x="-7" y="16" width="14" height="10" rx="1" fill="#0d1e2e" stroke="#1a3040" stroke-width="1"/>
+          <line x1="-4" y1="18" x2="-4" y2="24" stroke="#1a3040" stroke-width="1"/>
+          <line x1="0"  y1="18" x2="0"  y2="24" stroke="#1a3040" stroke-width="1"/>
+          <line x1="4"  y1="18" x2="4"  y2="24" stroke="#1a3040" stroke-width="1"/>
+          <rect x="-10" y="-6" width="20" height="22" rx="3" class="p-fill"/>
+          <rect x="-9"  y="-21" width="18" height="16" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
+          <g class="p-spin" style="transform-origin:0px -13px">
+            <line x1="-7" y1="-13" x2="7" y2="-13" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="0"  y1="-20" x2="0" y2="-6"  stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-5" y1="-18" x2="5" y2="-8"  stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="5"  y1="-18" x2="-5" y2="-8" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
           </g>
-          <text x="245" y="218" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. SUMERGIBLE 2</text>
-          <text x="245" y="229" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">20 HP · I1·I3·Q1</text>
-          <text id="svgrt-r2" x="245" y="240" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
         </g>
+        <text x="245" y="219" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. SUMERGIBLE 2</text>
+        <text x="245" y="230" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">20 HP · Q2</text>
+        <text id="svgrt-r2" x="245" y="241" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
+      </g>
 
-        <!-- Logo! badge -->
-        <rect x="6" y="6" width="88" height="22" rx="2" fill="#0d1c28" stroke="#1e3040" stroke-width="1"/>
-        <text x="12" y="18" font-family="'Rajdhani'" font-size="9" fill="#3a6080" letter-spacing="1">SIEMENS LOGO!</text>
-        <text x="12" y="26" font-family="'Share Tech Mono'" font-size="7" fill="#2d4a5a">I1·I2·I3 / Q1·Q2</text>
-      </svg>
+      <!-- Logo! badge -->
+      <rect x="6" y="6" width="90" height="22" rx="2" fill="#0d1c28" stroke="#1e3040" stroke-width="1"/>
+      <text x="12" y="18" font-family="'Rajdhani'" font-size="9" fill="#3a6080" letter-spacing="1">SIEMENS LOGO!</text>
+      <text x="12" y="27" font-family="'Share Tech Mono'" font-size="7" fill="#2d4a5a">I1·I3·Icr / Q1·Q2</text>
+    </svg>
+    </div>
+
+    <!-- IO TABLE RÍO -->
+    <div class="iotable">
+      <div class="iohead">
+        <div class="iocl">I/O</div><div class="iocl">Descripción</div>
+        <div class="iocl" style="text-align:center">Estado</div>
+        <div class="iocl" style="text-align:center">Val</div>
       </div>
-
-      <div class="iotable">
-        <div class="iohead">
-          <div class="iocl">I/O</div><div class="iocl">Descripción</div>
-          <div class="iocl" style="text-align:center">Estado</div>
-          <div class="iocl" style="text-align:center">Val</div>
-        </div>
-        <div class="iorow"><div class="iotag">I1</div><div class="iodesc">Falla / Protección térmica</div><div id="rio-I1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="rio-I1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">I2</div><div class="iodesc">Reserva / Nivel bajo</div><div id="rio-I2-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="rio-I2-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">I3</div><div class="iodesc">Habilitación / Nivel OK</div><div id="rio-I3-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="rio-I3-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">Q1</div><div class="iodesc">Salida marcha bombas</div><div id="rio-Q1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="rio-Q1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
+      <div class="iorow">
+        <div class="iotag">I1</div><div class="iodesc">Falla común / Protección térmica</div>
+        <div id="rio-I1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="rio-I1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
       </div>
-
-      <div class="chiprow">
-        <div class="chip s-gray" id="chip-r1">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Sumergible 1</div>
-            <div class="chip-state" id="chip-r1-s">EN ESPERA</div>
-            <div class="chip-runtime" id="rt-r1">─ Sin datos</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">20HP</span>
-        </div>
-        <div class="chip s-gray" id="chip-r2">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Sumergible 2</div>
-            <div class="chip-state" id="chip-r2-s">EN ESPERA</div>
-            <div class="chip-runtime" id="rt-r2">─ Sin datos</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">20HP</span>
-        </div>
+      <div class="iorow">
+        <div class="iotag">I3</div><div class="iodesc">Habilitación / Nivel OK</div>
+        <div id="rio-I3-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="rio-I3-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
       </div>
-
-      <div class="legend">
-        <div class="leg"><div class="legdot green"></div><span class="legtxt">OPERANDO — Q1=1, I1=0, I3=1</span></div>
-        <div class="leg"><div class="legdot red"></div><span class="legtxt">FALLA — I1=1</span></div>
-        <div class="leg"><div class="legdot" style="background:var(--yellow);box-shadow:0 0 5px var(--yellow)"></div><span class="legtxt">DESHABILITADA — I1=0, Q1=0, I3=0</span></div>
-        <div class="leg"><div class="legdot gray"></div><span class="legtxt">EN ESPERA — I3=1, I1/I2/Q1=0</span></div>
+      <div class="iorow">
+        <div class="iotag out">Q1</div><div class="iodesc">Salida marcha — Bomba Sumergible 1</div>
+        <div id="rio-Q1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="rio-Q1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag out">Q2</div><div class="iodesc">Salida marcha — Bomba Sumergible 2</div>
+        <div id="rio-Q2-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="rio-Q2-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag sens">Icr</div><div class="iodesc">Sensor nivel río — toma de agua</div>
+        <div id="rio-Icr-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="rio-Icr-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════
-         ESTACIÓN CISTERNA
-    ══════════════════════════════════ -->
-    <div class="scard" id="card-cis">
-      <div class="scard-header">
-        <div>
-          <div class="scard-name">Estación Cisterna</div>
-          <div class="scard-id">pasodelastropascisterna · RPi-002 · Siemens Logo!</div>
+    <!-- CHIPS RÍO -->
+    <div class="chiprow">
+      <div class="chip s-gray" id="chip-r1">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Sumergible 1 · Q1</div>
+          <div class="chip-state" id="chip-r1-s">EN ESPERA</div>
+          <div class="chip-runtime" id="rt-r1">─</div>
         </div>
-        <div class="scard-ping" id="ping-cis">Ping: -- ms</div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">20HP</span>
       </div>
-
-      <div class="diagram">
-      <svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gSky2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#08141e"/><stop offset="100%" stop-color="#0a1c2c"/>
-          </linearGradient>
-          <linearGradient id="gGnd2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0c1e0e"/><stop offset="100%" stop-color="#07130a"/>
-          </linearGradient>
-          <clipPath id="tankClip">
-            <rect x="186" y="35" width="88" height="112"/>
-          </clipPath>
-        </defs>
-
-        <rect x="0" y="0" width="540" height="270" fill="url(#gSky2)"/>
-        <rect x="0" y="152" width="540" height="118" fill="url(#gGnd2)"/>
-        <path d="M0,152 Q135,145 270,151 Q405,157 540,149" stroke="#142a1a" stroke-width="1.5" fill="none"/>
-
-        <!-- CAÑO DE ENTRADA ← (from left) -->
-        <line x1="0" y1="32" x2="186" y2="32" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="cPipeIn" x1="0" y1="32" x2="186" y2="32" stroke-width="5"/>
-        <text x="8" y="24" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" letter-spacing="2">← CAÑO DE ENTRADA</text>
-
-        <!-- ── CISTERNA ── -->
-        <!-- Outer wall -->
-        <rect x="186" y="35" width="88" height="112" rx="3" fill="#0f1e2a" stroke="#1e3545" stroke-width="2"/>
-        <!-- Dome -->
-        <ellipse cx="230" cy="35" rx="44" ry="10" fill="#152535" stroke="#1e3545" stroke-width="1.5"/>
-        <!-- Hatch -->
-        <ellipse cx="230" cy="33" rx="10" ry="4" fill="#0d1c28" stroke="#243548" stroke-width="1"/>
-        <line x1="230" y1="25" x2="230" y2="29" stroke="#243548" stroke-width="2" stroke-linecap="round"/>
-        <!-- Arrow entry -->
-        <line x1="230" y1="35" x2="230" y2="55" stroke="#1a4060" stroke-width="2" stroke-dasharray="3 2"/>
-        <polygon points="226,54 230,62 234,54" fill="#1a4a70" opacity=".6"/>
-        <!-- Water fill -->
-        <!-- Level LOW (bottom third): red Ic=0,In=0 -->
-        <rect id="tankLvLow"  x="188" y="112" width="84" height="34" fill="#aa2020" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
-        <!-- Level MED (middle): cyan Ic=1,In=0 -->
-        <rect id="tankLvMed"  x="188" y="77"  width="84" height="35" fill="#1a90c0" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
-        <!-- Level HIGH (top): green Ic=1,In=1 -->
-        <rect id="tankLvHigh" x="188" y="43"  width="84" height="34" fill="#1a8050" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
-        <!-- Surface shimmer -->
-        <path id="cisWave" d="M188,112 Q205,109 222,112 Q239,115 256,112 L256,114 Q239,117 222,114 Q205,111 188,114 Z" fill="#80e0ff" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s">
-          <animateTransform attributeName="transform" type="translate" values="0,0;-18,0;0,0" dur="3.5s" repeatCount="indefinite"/>
-        </path>
-        <!-- Sensor Ic line (lower boundary ~1/3) -->
-        <line x1="186" y1="112" x2="274" y2="112" stroke="#1a3a50" stroke-width=".8" stroke-dasharray="3 2"/>
-        <circle id="sensorIc" cx="277" cy="112" r="3.5" fill="#2d5a7a" style="transition:fill .4s"/>
-        <text id="lblIc" x="283" y="115" font-family="'Share Tech Mono'" font-size="7" fill="#2d5a7a">Ic=0</text>
-        <!-- Sensor In line (upper boundary ~2/3) -->
-        <line x1="186" y1="77"  x2="274" y2="77"  stroke="#1a3a50" stroke-width=".8" stroke-dasharray="3 2"/>
-        <circle id="sensorIn" cx="277" cy="77"  r="3.5" fill="#2d5a7a" style="transition:fill .4s"/>
-        <text id="lblIn"  x="283" y="80"  font-family="'Share Tech Mono'" font-size="7" fill="#2d5a7a">In=0</text>
-        <!-- Level status label inside tank -->
-        <text id="tankLvLbl" x="230" y="98" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" text-anchor="middle" letter-spacing="1" style="transition:fill .4s">─</text>
-        <!-- Label -->
-        <text x="230" y="22" font-family="'Rajdhani'" font-size="10" fill="#3a7a9a" text-anchor="middle" letter-spacing="2">CISTERNA</text>
-
-        <!-- Cisterna bottom outlet (CAÑO DE SALIDA) -->
-        <line x1="230" y1="147" x2="230" y2="178" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="cPipeGravV" x1="230" y1="147" x2="230" y2="177" stroke-width="5"/>
-        <!-- T-JUNCTION salida cisterna -->
-        <circle cx="230" cy="178" r="8" fill="#162535" stroke="#243548" stroke-width="1.5"/>
-        <text x="230" y="196" font-family="'Rajdhani'" font-size="8" fill="#2d5a7a" text-anchor="middle">T-SALIDA CISTERNA</text>
-
-        <!-- GRAVEDAD → left -->
-        <line x1="230" y1="178" x2="60" y2="178" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="cPipeGravH" x1="230" y1="178" x2="60" y2="178" stroke-width="5"/>
-        <text x="62" y="170" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="1">← DESCARGA GRAVEDAD</text>
-        <circle cx="55" cy="178" r="6" fill="#0d1e2a" stroke="#1a3040" stroke-width="1.5"/>
-
-        <!-- → to centrifugal pumps (right) -->
-        <line x1="230" y1="178" x2="320" y2="178" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-        <line class="pipe-flow" id="cPipeToP" x1="230" y1="178" x2="320" y2="178" stroke-width="5"/>
-
-        <!-- ── BOMBA CENTRÍFUGA A ── -->
-        <g class="pump-g s-gray" id="pump-cis-A">
-          <g class="p-body" transform="translate(346,165)">
-            <!-- Base -->
-            <rect x="-24" y="16" width="48" height="8" rx="1" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <!-- Volute -->
-            <ellipse cx="0" cy="0" rx="22" ry="17" class="p-fill"/>
-            <!-- Suction port (left) -->
-            <rect x="-30" y="-5" width="10" height="10" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <!-- Discharge port (top) -->
-            <rect x="-5" y="-26" width="10" height="12" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <!-- Motor housing (right) -->
-            <rect x="20" y="-14" width="26" height="28" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
-            <line x1="24" y1="-9" x2="42" y2="-9" stroke="#1a3040" stroke-width="1"/>
-            <line x1="24" y1="-2" x2="42" y2="-2" stroke="#1a3040" stroke-width="1"/>
-            <line x1="24" y1="5" x2="42" y2="5" stroke="#1a3040" stroke-width="1"/>
-            <!-- Impeller -->
-            <g class="p-spin" style="transform-origin:0px 0px">
-              <line x1="-11" y1="0" x2="11" y2="0" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="0" y1="-11" x2="0" y2="11" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-8" y1="-8" x2="8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="8" y1="-8" x2="-8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
-            <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
-          </g>
-          <!-- Suction pipe from T -->
-          <line x1="320" y1="178" x2="316" y2="165" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-          <line class="pipe-flow" id="cPipeA-in" x1="320" y1="178" x2="317" y2="165" stroke-width="5"/>
-          <!-- Discharge pipe → right (distribución A) -->
-          <line x1="346" y1="139" x2="540" y2="139" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-          <line class="pipe-flow" id="cPipeA-out" x1="346" y1="139" x2="540" y2="139" stroke-width="5"/>
-          <text x="370" y="131" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="2">DISTRIBUCIÓN A →</text>
-          <text x="346" y="205" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. CENTRÍFUGA A</text>
-          <text x="346" y="217" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">I1·I3·Q1</text>
-          <text id="svgrt-cA" x="346" y="228" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
-        </g>
-
-        <!-- ── BOMBA CENTRÍFUGA B ── -->
-        <g class="pump-g s-gray" id="pump-cis-B">
-          <g class="p-body" transform="translate(346,232)">
-            <rect x="-24" y="16" width="48" height="8" rx="1" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <ellipse cx="0" cy="0" rx="22" ry="17" class="p-fill"/>
-            <rect x="-30" y="-5" width="10" height="10" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <rect x="-5" y="-26" width="10" height="12" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
-            <rect x="20" y="-14" width="26" height="28" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
-            <line x1="24" y1="-9" x2="42" y2="-9" stroke="#1a3040" stroke-width="1"/>
-            <line x1="24" y1="-2" x2="42" y2="-2" stroke="#1a3040" stroke-width="1"/>
-            <line x1="24" y1="5" x2="42" y2="5" stroke="#1a3040" stroke-width="1"/>
-            <g class="p-spin" style="transform-origin:0px 0px">
-              <line x1="-11" y1="0" x2="11" y2="0" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="0" y1="-11" x2="0" y2="11" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-8" y1="-8" x2="8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="8" y1="-8" x2="-8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
-            <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
-          </g>
-          <!-- Suction from T down -->
-          <line x1="320" y1="178" x2="320" y2="232" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-          <line class="pipe-flow" id="cPipeB-suc" x1="320" y1="178" x2="320" y2="232" stroke-width="5"/>
-          <line x1="320" y1="232" x2="324" y2="232" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-          <line class="pipe-flow" id="cPipeB-in" x1="320" y1="232" x2="323" y2="232" stroke-width="5"/>
-          <!-- Discharge → right (distribución B) -->
-          <line x1="346" y1="206" x2="540" y2="206" stroke="#1e3548" stroke-width="7" stroke-linecap="round"/>
-          <line class="pipe-flow" id="cPipeB-out" x1="346" y1="206" x2="540" y2="206" stroke-width="5"/>
-          <text x="370" y="198" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="2">DISTRIBUCIÓN B →</text>
-          <text x="346" y="264" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. CENTRÍFUGA B</text>
-        </g>
-
-        <!-- Shared discharge header (single outlet label) -->
-        <text x="346" y="220" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">I1·I3·Q1 · UNA SALIDA</text>
-
-        <!-- Logo! badge -->
-        <rect x="6" y="6" width="88" height="22" rx="2" fill="#0d1c28" stroke="#1e3040" stroke-width="1"/>
-        <text x="12" y="18" font-family="'Rajdhani'" font-size="9" fill="#3a6080" letter-spacing="1">SIEMENS LOGO!</text>
-        <text x="12" y="26" font-family="'Share Tech Mono'" font-size="7" fill="#2d4a5a">I1·I2·I3 / Q1·Q2</text>
-      </svg>
+      <div class="chip s-gray" id="chip-r2">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Sumergible 2 · Q2</div>
+          <div class="chip-state" id="chip-r2-s">EN ESPERA</div>
+          <div class="chip-runtime" id="rt-r2">─</div>
+        </div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">20HP</span>
       </div>
-
-      <div class="iotable">
-        <div class="iohead">
-          <div class="iocl">I/O</div><div class="iocl">Descripción</div>
-          <div class="iocl" style="text-align:center">Estado</div>
-          <div class="iocl" style="text-align:center">Val</div>
+      <div class="chip s-gray" id="chip-riolv">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Nivel Río · Icr</div>
+          <div class="chip-state" id="chip-riolv-s">─</div>
         </div>
-        <div class="iorow"><div class="iotag">I1</div><div class="iodesc">Falla / Protección térmica</div><div id="cis-I1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-I1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">I2</div><div class="iodesc">Nivel bajo cisterna</div><div id="cis-I2-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-I2-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">I3</div><div class="iodesc">Nivel OK cisterna</div><div id="cis-I3-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-I3-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag">Q1</div><div class="iodesc">Salida marcha bombas centrífugas</div><div id="cis-Q1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-Q1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag" style="color:var(--teal)">Ic</div><div class="iodesc">Sensor nivel medio (cisterna)</div><div id="cis-Ic-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-Ic-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-        <div class="iorow"><div class="iotag" style="color:var(--teal)">In</div><div class="iodesc">Sensor nivel alto (cisterna)</div><div id="cis-In-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div><div id="cis-In-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div></div>
-      </div>
-
-      <div class="chiprow">
-        <div class="chip s-gray" id="chip-cA">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Centrífuga A</div>
-            <div class="chip-state" id="chip-cA-s">EN ESPERA</div>
-            <div class="chip-runtime" id="rt-cA">─ Sin datos</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PRESUR.</span>
-        </div>
-        <div class="chip s-gray" id="chip-cB">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Centrífuga B</div>
-            <div class="chip-state" id="chip-cB-s">EN ESPERA</div>
-            <div class="chip-runtime" id="rt-cB">─ Sin datos</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PRESUR.</span>
-        </div>
-        <div class="chip s-gray" id="chip-grav">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Gravedad</div>
-            <div class="chip-state" id="chip-grav-s">CERRADO</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PASIVO</span>
-        </div>
-        <div class="chip s-gray" id="chip-tank">
-          <div class="chip-dot"></div>
-          <div style="flex:1">
-            <div class="chip-name">Nivel Cisterna</div>
-            <div class="chip-state" id="chip-tank-s">─</div>
-          </div>
-          <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">Ic/In</span>
-        </div>
-      </div>
-
-      <div class="legend">
-        <div class="leg"><div class="legdot green"></div><span class="legtxt">OPERANDO — Q1=1, I1=0, I3=1</span></div>
-        <div class="leg"><div class="legdot red"></div><span class="legtxt">FALLA — I1=1</span></div>
-        <div class="leg"><div class="legdot" style="background:var(--yellow);box-shadow:0 0 5px var(--yellow)"></div><span class="legtxt">DESHABILITADA — I1=0, Q1=0, I3=0</span></div>
-        <div class="leg"><div class="legdot gray"></div><span class="legtxt">EN ESPERA — I3=1, I1/I2/Q1=0</span></div>
-        <div class="leg"><div class="legdot" style="background:#aa2020"></div><span class="legtxt">Cisterna VACÍA — Ic=0, In=0</span></div>
-        <div class="leg"><div class="legdot" style="background:#1a90c0"></div><span class="legtxt">Cisterna MEDIA — Ic=1, In=0</span></div>
-        <div class="leg"><div class="legdot" style="background:#1a8050"></div><span class="legtxt">Cisterna LLENA — Ic=1, In=1</span></div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">Icr</span>
       </div>
     </div>
+
+    <div class="legend">
+      <div class="leg"><div class="legdot" style="background:var(--green);box-shadow:0 0 5px var(--green)"></div><span class="legtxt">OPERANDO — Qn=1, I1=0, I3=1</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--red)"></div><span class="legtxt">FALLA — I1=1</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--yellow)"></div><span class="legtxt">DESHABILITADA — I3=0</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--gray)"></div><span class="legtxt">EN ESPERA — I3=1, Qn=0</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--blue)"></div><span class="legtxt">Icr=1: nivel óptimo</span></div>
+      <div class="leg"><div class="legdot" style="background:#8a1a1a"></div><span class="legtxt">Icr=0: nivel bajo</span></div>
+    </div>
+  </div><!-- /card-rio -->
+
+
+  <!-- ══════════════════════════════════════════════════
+       ESTACIÓN CISTERNA
+       I1 = falla común  |  I3 = habilitación común
+       Q1 = Bomba Centrífuga A
+       Q2 = Bomba Centrífuga B
+       Ic = sensor nivel medio  |  In = sensor nivel alto
+  ══════════════════════════════════════════════════ -->
+  <div class="scard" id="card-cis">
+    <div class="scard-header">
+      <div>
+        <div class="scard-name">Estación Cisterna</div>
+        <div class="scard-id">pasodelastropascisterna · RPi-002 · Siemens Logo! · Q1=BombaA · Q2=BombaB</div>
+      </div>
+      <div class="scard-ping" id="ping-cis">Ping: -- ms</div>
+    </div>
+
+    <div class="diagram">
+    <svg viewBox="0 0 540 285" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gSky2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#08141e"/><stop offset="100%" stop-color="#0a1c2c"/>
+        </linearGradient>
+        <linearGradient id="gGnd2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0c1e0e"/><stop offset="100%" stop-color="#07130a"/>
+        </linearGradient>
+        <clipPath id="tankClip">
+          <rect x="186" y="35" width="88" height="112"/>
+        </clipPath>
+      </defs>
+
+      <rect width="540" height="285" fill="url(#gSky2)"/>
+      <rect y="155" width="540" height="130" fill="url(#gGnd2)"/>
+      <path d="M0,155 Q135,148 270,154 Q405,160 540,152" stroke="#142a1a" stroke-width="1.5" fill="none"/>
+
+      <!-- CAÑO DE ENTRADA ← -->
+      <line x1="0"   y1="32" x2="186" y2="32" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line class="pipe-flow" id="cPipeIn" x1="0" y1="32" x2="186" y2="32" stroke-width="5"/>
+      <text x="8" y="23" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" letter-spacing="2">← CAÑO DE ENTRADA</text>
+
+      <!-- ── CISTERNA ── -->
+      <rect x="186" y="35" width="88" height="112" rx="3" fill="#0f1e2a" stroke="#1e3545" stroke-width="2"/>
+      <ellipse cx="230" cy="35" rx="44" ry="10" fill="#152535" stroke="#1e3545" stroke-width="1.5"/>
+      <ellipse cx="230" cy="33" rx="10" ry="4"  fill="#0d1c28" stroke="#243548" stroke-width="1"/>
+      <line x1="230" y1="25" x2="230" y2="29" stroke="#243548" stroke-width="2" stroke-linecap="round"/>
+      <line x1="230" y1="35" x2="230" y2="55" stroke="#1a4060" stroke-width="2" stroke-dasharray="3 2"/>
+      <polygon points="226,54 230,62 234,54" fill="#1a4a70" opacity=".6"/>
+
+      <!-- Water level rects -->
+      <rect id="tankLvLow"  x="188" y="112" width="84" height="34" fill="#aa2020" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
+      <rect id="tankLvMed"  x="188" y="77"  width="84" height="35" fill="#1a90c0" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
+      <rect id="tankLvHigh" x="188" y="43"  width="84" height="34" fill="#1a8050" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s,fill .5s"/>
+      <path id="cisWave" d="M188,112 Q205,109 222,112 Q239,115 256,112 L256,114 Q239,117 222,114 Q205,111 188,114 Z"
+            fill="#80e0ff" opacity="0" clip-path="url(#tankClip)" style="transition:opacity .6s">
+        <animateTransform attributeName="transform" type="translate" values="0,0;-18,0;0,0" dur="3.5s" repeatCount="indefinite"/>
+      </path>
+
+      <!-- Level sensors -->
+      <line x1="186" y1="112" x2="274" y2="112" stroke="#1a3a50" stroke-width=".8" stroke-dasharray="3 2"/>
+      <circle id="sensorIc" cx="277" cy="112" r="3.5" fill="#2d5a7a" style="transition:fill .4s"/>
+      <text id="lblIc" x="283" y="115" font-family="'Share Tech Mono'" font-size="7" fill="#2d5a7a">Ic=0</text>
+      <line x1="186" y1="77"  x2="274" y2="77"  stroke="#1a3a50" stroke-width=".8" stroke-dasharray="3 2"/>
+      <circle id="sensorIn" cx="277" cy="77"  r="3.5" fill="#2d5a7a" style="transition:fill .4s"/>
+      <text id="lblIn"  x="283" y="80"  font-family="'Share Tech Mono'" font-size="7" fill="#2d5a7a">In=0</text>
+      <text id="tankLvLbl" x="230" y="99" font-family="'Rajdhani'" font-size="10" fill="#2d5a7a" text-anchor="middle" letter-spacing="1" style="transition:fill .4s">─</text>
+      <text x="230" y="17" font-family="'Rajdhani'" font-size="10" fill="#3a7a9a" text-anchor="middle" letter-spacing="2">CISTERNA</text>
+
+      <!-- Outlet pipe down from cisterna -->
+      <line x1="230" y1="147" x2="230" y2="180" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line class="pipe-flow" id="cPipeGravV" x1="230" y1="147" x2="230" y2="180" stroke-width="5"/>
+
+      <!-- T-junction salida -->
+      <circle cx="230" cy="180" r="9" fill="#162535" stroke="#243548" stroke-width="2"/>
+      <text x="230" y="198" font-family="'Rajdhani'" font-size="8" fill="#2d5a7a" text-anchor="middle">T-SALIDA</text>
+
+      <!-- Gravity → left -->
+      <line x1="60"  y1="180" x2="230" y2="180" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line class="pipe-flow" id="cPipeGravH" x1="230" y1="180" x2="60" y2="180" stroke-width="5"/>
+      <text x="62" y="170" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="1">← DESCARGA GRAVEDAD</text>
+      <circle cx="55" cy="180" r="6" fill="#0d1e2a" stroke="#1a3040" stroke-width="1.5"/>
+
+      <!-- Header to centrifugal pumps → right -->
+      <line x1="230" y1="180" x2="304" y2="180" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <!-- Two flow layers on shared header, one per pump -->
+      <line class="pipe-flow" id="cHdrA" x1="230" y1="180" x2="304" y2="180" stroke-width="5"/>
+      <line class="pipe-flow" id="cHdrB" x1="230" y1="180" x2="304" y2="180" stroke-width="5" style="opacity:.75"/>
+
+      <!-- T at pump header -->
+      <circle cx="304" cy="180" r="7" fill="#162535" stroke="#243548" stroke-width="1.5"/>
+
+      <!-- ── BOMBA CENTRÍFUGA A · Q1 ── -->
+      <!-- suction A: from T upward-right to pump -->
+      <line x1="304" y1="180" x2="304" y2="163" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line x1="304" y1="163" x2="330" y2="163" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line class="pipe-flow" id="cPA-in1" x1="304" y1="180" x2="304" y2="163" stroke-width="5"/>
+      <line class="pipe-flow" id="cPA-in2" x1="304" y1="163" x2="330" y2="163" stroke-width="5"/>
+      <g class="pump-g s-gray" id="pump-cis-A">
+        <g class="p-body" transform="translate(330,163)">
+          <rect x="-24" y="16" width="48" height="8" rx="1" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <ellipse cx="0" cy="0" rx="22" ry="17" class="p-fill"/>
+          <rect x="-30" y="-5" width="10" height="10" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <rect x="-5"  y="-26" width="10" height="12" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <rect x="20"  y="-14" width="26" height="28" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
+          <line x1="24" y1="-9" x2="42" y2="-9" stroke="#1a3040" stroke-width="1"/>
+          <line x1="24" y1="-2" x2="42" y2="-2" stroke="#1a3040" stroke-width="1"/>
+          <line x1="24" y1="5"  x2="42" y2="5"  stroke="#1a3040" stroke-width="1"/>
+          <g class="p-spin" style="transform-origin:0px 0px">
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="0" y1="-11" x2="0" y2="11" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-8" y1="-8" x2="8" y2="8"  stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8"  y1="-8" x2="-8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+        </g>
+        <!-- discharge A → right -->
+        <line x1="330" y1="137" x2="540" y2="137" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+        <line class="pipe-flow" id="cPA-out" x1="330" y1="137" x2="540" y2="137" stroke-width="5"/>
+        <text x="355" y="128" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="2">DISTRIBUCIÓN A →</text>
+        <text x="330" y="203" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. CENTRÍFUGA A</text>
+        <text x="330" y="214" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">Q1</text>
+        <text id="svgrt-cA" x="330" y="225" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
+      </g>
+
+      <!-- ── BOMBA CENTRÍFUGA B · Q2 ── -->
+      <!-- suction B: from T downward to pump -->
+      <line x1="304" y1="180" x2="304" y2="232" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line x1="304" y1="232" x2="330" y2="232" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+      <line class="pipe-flow" id="cPB-in1" x1="304" y1="180" x2="304" y2="232" stroke-width="5"/>
+      <line class="pipe-flow" id="cPB-in2" x1="304" y1="232" x2="330" y2="232" stroke-width="5"/>
+      <g class="pump-g s-gray" id="pump-cis-B">
+        <g class="p-body" transform="translate(330,232)">
+          <rect x="-24" y="16" width="48" height="8" rx="1" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <ellipse cx="0" cy="0" rx="22" ry="17" class="p-fill"/>
+          <rect x="-30" y="-5" width="10" height="10" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <rect x="-5"  y="-26" width="10" height="12" rx="2" fill="#0d1c28" stroke="#1a3040" stroke-width="1"/>
+          <rect x="20"  y="-14" width="26" height="28" rx="3" fill="#14222e" stroke="#1e3040" stroke-width="1"/>
+          <line x1="24" y1="-9" x2="42" y2="-9" stroke="#1a3040" stroke-width="1"/>
+          <line x1="24" y1="-2" x2="42" y2="-2" stroke="#1a3040" stroke-width="1"/>
+          <line x1="24" y1="5"  x2="42" y2="5"  stroke="#1a3040" stroke-width="1"/>
+          <g class="p-spin" style="transform-origin:0px 0px">
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="0" y1="-11" x2="0" y2="11" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-linecap="round"/>
+            <line x1="-8" y1="-8" x2="8" y2="8"  stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8"  y1="-8" x2="-8" y2="8" stroke="rgba(255,255,255,.15)" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+        </g>
+        <!-- discharge B → right -->
+        <line x1="330" y1="206" x2="540" y2="206" stroke="#1e3548" stroke-width="8" stroke-linecap="round"/>
+        <line class="pipe-flow" id="cPB-out" x1="330" y1="206" x2="540" y2="206" stroke-width="5"/>
+        <text x="355" y="197" font-family="'Rajdhani'" font-size="9" fill="#2d5a7a" letter-spacing="2">DISTRIBUCIÓN B →</text>
+        <text x="330" y="265" font-family="'Rajdhani'" font-size="10" fill="#6a90aa" text-anchor="middle" letter-spacing="1">B. CENTRÍFUGA B</text>
+        <text x="330" y="276" font-family="'Share Tech Mono'" font-size="8" fill="#2d4a5a" text-anchor="middle">Q2</text>
+        <text id="svgrt-cB" x="330" y="287" font-family="'Share Tech Mono'" font-size="8" fill="#2d5a7a" text-anchor="middle">─</text>
+      </g>
+
+      <!-- Logo! badge -->
+      <rect x="6" y="6" width="90" height="22" rx="2" fill="#0d1c28" stroke="#1e3040" stroke-width="1"/>
+      <text x="12" y="18" font-family="'Rajdhani'" font-size="9" fill="#3a6080" letter-spacing="1">SIEMENS LOGO!</text>
+      <text x="12" y="27" font-family="'Share Tech Mono'" font-size="7" fill="#2d4a5a">I1·I3·Ic·In / Q1·Q2</text>
+    </svg>
+    </div>
+
+    <!-- IO TABLE CISTERNA -->
+    <div class="iotable">
+      <div class="iohead">
+        <div class="iocl">I/O</div><div class="iocl">Descripción</div>
+        <div class="iocl" style="text-align:center">Estado</div>
+        <div class="iocl" style="text-align:center">Val</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag">I1</div><div class="iodesc">Falla común / Protección térmica</div>
+        <div id="cis-I1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-I1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag">I3</div><div class="iodesc">Habilitación / Nivel OK cisterna</div>
+        <div id="cis-I3-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-I3-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag out">Q1</div><div class="iodesc">Salida marcha — Bomba Centrífuga A</div>
+        <div id="cis-Q1-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-Q1-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag out">Q2</div><div class="iodesc">Salida marcha — Bomba Centrífuga B</div>
+        <div id="cis-Q2-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-Q2-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag sens">Ic</div><div class="iodesc">Sensor nivel medio cisterna</div>
+        <div id="cis-Ic-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-Ic-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+      <div class="iorow">
+        <div class="iotag sens">In</div><div class="iodesc">Sensor nivel alto cisterna</div>
+        <div id="cis-In-b" style="text-align:center"><span class="iobadge b-off">OFF</span></div>
+        <div id="cis-In-v" style="text-align:center;font-family:var(--fmono);font-size:11px;color:var(--txt-lo)">0</div>
+      </div>
+    </div>
+
+    <!-- CHIPS CISTERNA -->
+    <div class="chiprow">
+      <div class="chip s-gray" id="chip-cA">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Centrífuga A · Q1</div>
+          <div class="chip-state" id="chip-cA-s">EN ESPERA</div>
+          <div class="chip-runtime" id="rt-cA">─</div>
+        </div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PRESUR.</span>
+      </div>
+      <div class="chip s-gray" id="chip-cB">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Centrífuga B · Q2</div>
+          <div class="chip-state" id="chip-cB-s">EN ESPERA</div>
+          <div class="chip-runtime" id="rt-cB">─</div>
+        </div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PRESUR.</span>
+      </div>
+      <div class="chip s-gray" id="chip-grav">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Salida Gravedad</div>
+          <div class="chip-state" id="chip-grav-s">CERRADO</div>
+        </div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">PASIVO</span>
+      </div>
+      <div class="chip s-gray" id="chip-tank">
+        <div class="chip-dot"></div>
+        <div style="flex:1">
+          <div class="chip-name">Nivel Cisterna</div>
+          <div class="chip-state" id="chip-tank-s">─</div>
+        </div>
+        <span style="font-family:var(--fmono);font-size:9px;color:var(--txt-lo)">Ic/In</span>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="legdot" style="background:var(--green);box-shadow:0 0 5px var(--green)"></div><span class="legtxt">OPERANDO — Qn=1, I1=0, I3=1</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--red)"></div><span class="legtxt">FALLA — I1=1</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--yellow)"></div><span class="legtxt">DESHABILITADA — I3=0</span></div>
+      <div class="leg"><div class="legdot" style="background:var(--gray)"></div><span class="legtxt">EN ESPERA — I3=1, Qn=0</span></div>
+      <div class="leg"><div class="legdot" style="background:#aa2020"></div><span class="legtxt">Cisterna VACÍA — Ic=0, In=0</span></div>
+      <div class="leg"><div class="legdot" style="background:#1a90c0"></div><span class="legtxt">Cisterna MEDIA — Ic=1, In=0</span></div>
+      <div class="leg"><div class="legdot" style="background:#1a8050"></div><span class="legtxt">Cisterna LLENA — Ic=1, In=1</span></div>
+    </div>
+  </div><!-- /card-cis -->
 
   </div><!-- /stations -->
 </main>
 
-<footer>AQUA SCADA v1.0 · Raspberry Pi 4B · Siemens Logo! · InfluxDB · Grafana Alloy · Prometheus · Grafana Cloud · Paso de las Tropas © 2026</footer>
+<footer>AQUA SCADA v2.0 · RPi-001/002 · Siemens Logo! · Q1/Q2 por bomba · InfluxDB · Grafana Alloy · Prometheus · Grafana Cloud · Paso de las Tropas © 2026</footer>
 
 <script>
-/* ── Clock ── */
+/* ═══════════════════════════════════════════
+   CLOCK & PING
+═══════════════════════════════════════════ */
 const clockEl=document.getElementById('clock');
 const tsEl=document.getElementById('m-ts');
 function tick(){
@@ -651,222 +732,282 @@ function tick(){
   clockEl.textContent=t; tsEl.textContent=t;
 }
 setInterval(tick,1000); tick();
-
-/* ── Ping simulation ── */
 function fakePing(id){
   document.getElementById(id).textContent='Ping: '+(8+Math.floor(Math.random()*38))+' ms';
 }
 setInterval(()=>{fakePing('ping-rio');fakePing('ping-cis')},4500);
 fakePing('ping-rio'); fakePing('ping-cis');
 
-/* ══ STATE ══ */
-let S={
-  rio:{I1:0,I2:0,I3:1,Q1:0},
-  cis:{I1:0,I2:0,I3:1,Q1:0,Ic:1,In:0}
+/* ═══════════════════════════════════════════
+   STATE MODEL
+   Each pump has its own Q output.
+   I1 (fault) and I3 (enable) are shared per station.
+
+   S.rio  → I1, I3, Q1 (Bomba1), Q2 (Bomba2), Icr (nivel río)
+   S.cis  → I1, I3, Q1 (BombaA), Q2 (BombaB), Ic, In
+═══════════════════════════════════════════ */
+let S = {
+  rio: { I1:0, I3:1, Q1:0, Q2:0, Icr:1 },
+  cis: { I1:0, I3:1, Q1:0, Q2:0, Ic:1, In:0 }
 };
 
-/* ── Runtime tracking ── */
-// Tracks start timestamp (ms) when pump goes green; null otherwise
-const RT={
-  'r1':null, 'r2':null, 'cA':null, 'cB':null
-};
+/* ═══════════════════════════════════════════
+   RUNTIME TRACKING  (per pump key)
+═══════════════════════════════════════════ */
+const RT = { r1:null, r2:null, cA:null, cB:null };
 
-function fmtRuntime(ms){
+function fmtRT(ms){
   if(ms===null) return '─ detenida';
   const s=Math.floor(ms/1000);
-  const h=Math.floor(s/3600);
-  const m=Math.floor((s%3600)/60);
-  const ss=s%60;
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), ss=s%60;
   return `▶ ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(ss).padStart(2,'0')}s`;
 }
-
 function updateRuntimes(){
   const now=Date.now();
   ['r1','r2','cA','cB'].forEach(k=>{
-    const elapsed=RT[k]!==null?now-RT[k]:null;
-    const txt=fmtRuntime(elapsed);
-    const chipEl=document.getElementById('rt-'+k);
-    if(chipEl) chipEl.textContent=txt;
-    const svgEl=document.getElementById('svgrt-'+k);
-    if(svgEl) svgEl.textContent= elapsed!==null ? txt.replace('▶ ','') : '─';
+    const el=RT[k]!==null?now-RT[k]:null;
+    const t=fmtRT(el);
+    const ce=document.getElementById('rt-'+k);   if(ce) ce.textContent=t;
+    const se=document.getElementById('svgrt-'+k); if(se) se.textContent=el!==null?t.replace('▶ ',''):'─';
   });
 }
 setInterval(updateRuntimes,1000);
 
-/* ── Pump state logic (5 states) ── */
-function pumpSt(io){
-  if(io.I1===1) return 'red';                                    // Falla
-  if(io.Q1===1&&io.I1===0&&io.I3===1) return 'green';           // Operando
-  if(io.I1===0&&io.Q1===0&&io.I3===0) return 'yellow';          // Deshabilitada
-  if(io.I3===1&&io.I1===0&&io.I2===0&&io.Q1===0) return 'gray'; // En espera
-  return 'gray';
+/* ═══════════════════════════════════════════
+   PUMP STATE LOGIC
+   Inputs: I1 (station fault), I3 (station enable), Q (this pump's output)
+   Returns: 'green'|'red'|'yellow'|'gray'
+═══════════════════════════════════════════ */
+function pumpSt(I1, I3, Q){
+  if(I1===1)                     return 'red';    // Falla
+  if(Q===1 && I1===0 && I3===1)  return 'green';  // Operando
+  if(I1===0 && Q===0 && I3===0)  return 'yellow'; // Deshabilitada
+  return 'gray';                                   // En espera
+}
+const LBL={green:'OPERANDO',red:'FALLA',yellow:'DESHABILITADA',gray:'EN ESPERA'};
+
+/* ═══════════════════════════════════════════
+   DOM HELPERS
+═══════════════════════════════════════════ */
+function setPump(id,st){ document.getElementById(id).className='pump-g s-'+st; }
+
+function setChip(cid,tid,st,prev,rtk){
+  document.getElementById(cid).className='chip s-'+st;
+  document.getElementById(tid).textContent=LBL[st];
+  if(st==='green'&&prev!=='green') RT[rtk]=Date.now();
+  else if(st!=='green'&&prev==='green') RT[rtk]=null;
 }
 
-const STATE_LBL={green:'OPERANDO',red:'FALLA',yellow:'DESHABILITADA',gray:'EN ESPERA'};
+// fc: pipe flow class from pump state
+function fc(st){ return st==='green'?'fg':st==='red'?'fr':''; }
 
-/* ── DOM helpers ── */
-function setPump(id,st){document.getElementById(id).className='pump-g s-'+st}
-
-function setChipState(chipId,txtId,rtId,st,prevSt,rtKey){
-  document.getElementById(chipId).className='chip s-'+st;
-  document.getElementById(txtId).textContent=STATE_LBL[st];
-  // Runtime: start timer when going green, clear when leaving green
-  if(st==='green'&&prevSt!=='green') RT[rtKey]=Date.now();
-  else if(st!=='green'&&prevSt==='green') RT[rtKey]=null;
+// fcCombined: best color when two pumps share a pipe
+function fcBest(s1,s2){
+  if(s1==='green'||s2==='green') return 'fg';
+  if(s1==='red'  ||s2==='red')   return 'fr';
+  return '';
 }
 
 function setFlow(id,cls){
-  const el=document.getElementById(id);
-  if(!el)return;
+  const el=document.getElementById(id); if(!el) return;
   el.className='pipe-flow'+(cls?' '+cls:'');
 }
-function flowCls(st){
-  return st==='green'?'fg':st==='red'?'fr':'';
-}
-function setIORow(prefix,tag,val,isErr){
-  const bc=val?(isErr?'b-err':'b-on'):'b-off';
-  document.getElementById(`${prefix}-${tag}-b`).innerHTML=`<span class="iobadge ${bc}">${val?'ON':'OFF'}</span>`;
-  const vEl=document.getElementById(`${prefix}-${tag}-v`);
-  vEl.textContent=val;
-  vEl.style.color=val?(isErr?'var(--red)':'var(--green)'):'var(--txt-lo)';
+
+function setBadge(bid,vid,val,isErr){
+  const cls=val?(isErr?'b-err':'b-on'):'b-off';
+  const bel=document.getElementById(bid); if(bel) bel.innerHTML=`<span class="iobadge ${cls}">${val?'ON':'OFF'}</span>`;
+  const vel=document.getElementById(vid);
+  if(vel){ vel.textContent=val; vel.style.color=val?(isErr?'var(--red)':'var(--green)'):'var(--txt-lo)'; }
 }
 
-/* ── Tank level logic ── */
-function tankLevel(Ic,In){
-  // Incongruencia: Ic=0, In=1
-  if(Ic===0&&In===1) return 'error';
-  if(Ic===0&&In===0) return 'low';    // Rojo
-  if(Ic===1&&In===0) return 'med';    // Celeste
-  if(Ic===1&&In===1) return 'high';   // Verde
-  return 'low';
-}
+/* ═══════════════════════════════════════════
+   TANK LEVEL RENDERER
+═══════════════════════════════════════════ */
+function renderTank(Ic, In){
+  const lvl=(Ic===0&&In===1)?'error':(Ic===0)?'low':(In===0)?'med':'high';
+  const low  = document.getElementById('tankLvLow');
+  const med  = document.getElementById('tankLvMed');
+  const high = document.getElementById('tankLvHigh');
+  const wave = document.getElementById('cisWave');
+  const lbl  = document.getElementById('tankLvLbl');
+  const sIc  = document.getElementById('sensorIc');
+  const sIn  = document.getElementById('sensorIn');
+  const cTank= document.getElementById('chip-tank');
+  const cTS  = document.getElementById('chip-tank-s');
 
-function renderTank(Ic,In){
-  const lvl=tankLevel(Ic,In);
-  const low =document.getElementById('tankLvLow');
-  const med =document.getElementById('tankLvMed');
-  const high=document.getElementById('tankLvHigh');
-  const wave=document.getElementById('cisWave');
-  const lbl =document.getElementById('tankLvLbl');
-  const sIc =document.getElementById('sensorIc');
-  const sIn =document.getElementById('sensorIn');
-  const lblIc=document.getElementById('lblIc');
-  const lblIn=document.getElementById('lblIn');
-  const chipTank=document.getElementById('chip-tank');
-  const chipTankS=document.getElementById('chip-tank-s');
-
-  // Reset all opacities
-  [low,med,high,wave].forEach(el=>el&&(el.style.opacity='0'));
+  [low,med,high,wave].forEach(e=>e&&(e.style.opacity='0'));
 
   if(lvl==='error'){
-    // Flash red across all levels
-    low.style.fill='#ff3b3b'; low.style.opacity='.6';
-    med.style.fill='#ff3b3b'; med.style.opacity='.4';
-    high.style.fill='#ff3b3b';high.style.opacity='.3';
-    lbl.textContent='⚠ ERROR NIVEL';lbl.style.fill='var(--red)';
-    chipTank.className='chip s-red';
-    chipTankS.textContent='INCONGRUENCIA';
+    [low,med,high].forEach(e=>{if(e){e.style.fill='#ff3b3b';e.style.opacity='.5';}});
+    wave.style.opacity='.2';
+    lbl.textContent='⚠ ERROR'; lbl.style.fill='var(--red)';
+    cTank.className='chip s-red'; cTS.textContent='INCONGRUENCIA'; cTS.style.color='';
     sIc.style.fill='var(--red)'; sIn.style.fill='var(--red)';
   } else if(lvl==='low'){
-    low.style.fill='#aa2020'; low.style.opacity='.75';
-    wave.style.opacity='.3';
+    low.style.fill='#aa2020'; low.style.opacity='.8';
+    wave.style.opacity='.2';
     lbl.textContent='NIVEL BAJO'; lbl.style.fill='var(--red)';
-    chipTank.className='chip s-red';
-    chipTankS.textContent='MUY BAJO';
+    cTank.className='chip s-red'; cTS.textContent='MUY BAJO'; cTS.style.color='';
     sIc.style.fill='#2d5a7a'; sIn.style.fill='#2d5a7a';
   } else if(lvl==='med'){
-    low.style.fill='#1a90c0'; low.style.opacity='.75';
-    med.style.fill='#1a90c0'; med.style.opacity='.75';
+    low.style.fill='#1a90c0'; low.style.opacity='.8';
+    med.style.fill='#1a90c0'; med.style.opacity='.8';
     wave.style.opacity='.35';
-    // Move wave to mid level
     lbl.textContent='NIVEL MEDIO'; lbl.style.fill='var(--blue)';
-    chipTank.className='chip s-gray';
-    chipTankS.textContent='NIVEL MEDIO';
-    chipTankS.style.color='var(--blue)';
+    cTank.className='chip s-gray'; cTS.textContent='NIVEL MEDIO'; cTS.style.color='var(--blue)';
     sIc.style.fill='var(--green)'; sIn.style.fill='#2d5a7a';
-  } else { // high
-    low.style.fill='#1a8050'; low.style.opacity='.75';
-    med.style.fill='#1a8050'; med.style.opacity='.75';
-    high.style.fill='#1a8050';high.style.opacity='.75';
+  } else {
+    [low,med,high].forEach(e=>{if(e){e.style.fill='#1a8050';e.style.opacity='.8';}});
     wave.style.opacity='.4';
     lbl.textContent='NIVEL ALTO'; lbl.style.fill='var(--green)';
-    chipTank.className='chip s-green';
-    chipTankS.textContent='NIVEL ALTO';
+    cTank.className='chip s-green'; cTS.textContent='NIVEL ALTO'; cTS.style.color='';
     sIc.style.fill='var(--green)'; sIn.style.fill='var(--green)';
   }
 
-  lblIc.textContent='Ic='+Ic;
-  lblIn.textContent='In='+In;
-
-  // IO rows for Ic / In
-  const icEl=document.getElementById('cis-Ic-b');
-  const inEl=document.getElementById('cis-In-b');
-  if(icEl) icEl.innerHTML=`<span class="iobadge ${Ic?'b-on':'b-off'}">${Ic?'ON':'OFF'}</span>`;
-  if(inEl) inEl.innerHTML=`<span class="iobadge ${(In&&lvl!=='error')?'b-on':(In?'b-err':'b-off')}">${In?'ON':'OFF'}</span>`;
-  const icV=document.getElementById('cis-Ic-v');
-  const inV=document.getElementById('cis-In-v');
-  if(icV){icV.textContent=Ic;icV.style.color=Ic?'var(--green)':'var(--txt-lo)'}
-  if(inV){inV.textContent=In;inV.style.color=In?(lvl==='error'?'var(--red)':'var(--green)'):'var(--txt-lo)'}
-
-  // Alert bar for level error
+  document.getElementById('lblIc').textContent='Ic='+Ic;
+  document.getElementById('lblIn').textContent='In='+In;
+  setBadge('cis-Ic-b','cis-Ic-v', Ic, false);
+  setBadge('cis-In-b','cis-In-v', In, lvl==='error');
   return lvl==='error';
 }
 
-/* ── Previous states for runtime tracking ── */
-let prevRioSt='gray', prevCisSt='gray';
+/* ═══════════════════════════════════════════
+   RIVER LEVEL RENDERER (Icr)
+═══════════════════════════════════════════ */
+function renderRiver(Icr){
+  const fill   = document.getElementById('riverFill');
+  const lbl    = document.getElementById('riverLvLbl');
+  const sensor = document.getElementById('sensorIcr');
+  const lblIcr = document.getElementById('lblIcr');
+  const chip   = document.getElementById('chip-riolv');
+  const chipS  = document.getElementById('chip-riolv-s');
 
-/* ── Render ── */
+  if(Icr===1){
+    fill.style.fill='#0d5a90'; fill.style.opacity='.75';
+    lbl.textContent='NIVEL ÓPTIMO'; lbl.style.fill='var(--blue)';
+    sensor.style.fill='var(--green)'; sensor.style.filter='drop-shadow(0 0 5px var(--green))';
+    chip.className='chip s-green'; chipS.textContent='ÓPTIMO'; chipS.style.color='';
+  } else {
+    fill.style.fill='#6a1a1a'; fill.style.opacity='.65';
+    lbl.textContent='NIVEL BAJO'; lbl.style.fill='var(--red)';
+    sensor.style.fill='var(--red)'; sensor.style.filter='drop-shadow(0 0 5px var(--red))';
+    chip.className='chip s-red'; chipS.textContent='NIVEL BAJO'; chipS.style.color='';
+  }
+  lblIcr.textContent='Icr='+Icr;
+  lblIcr.style.fill=Icr?'var(--teal)':'var(--red)';
+  setBadge('rio-Icr-b','rio-Icr-v', Icr, false);
+}
+
+/* ═══════════════════════════════════════════
+   PREVIOUS STATES (for runtime delta)
+═══════════════════════════════════════════ */
+let prev={ r1:'gray', r2:'gray', cA:'gray', cB:'gray' };
+
+/* ═══════════════════════════════════════════
+   MAIN RENDER
+═══════════════════════════════════════════ */
 function render(){
-  const rSt=pumpSt(S.rio);
-  const cSt=pumpSt(S.cis);
+  const {I1:rI1, I3:rI3, Q1:rQ1, Q2:rQ2} = S.rio;
+  const {I1:cI1, I3:cI3, Q1:cQ1, Q2:cQ2} = S.cis;
 
-  /* RIO pumps */
-  setPump('pump-rio-1',rSt); setPump('pump-rio-2',rSt);
-  setChipState('chip-r1','chip-r1-s','rt-r1',rSt,prevRioSt,'r1');
-  setChipState('chip-r2','chip-r2-s','rt-r2',rSt,prevRioSt,'r2');
-  ['I1','I2','I3','Q1'].forEach(t=>setIORow('rio',t,S.rio[t],t==='I1'));
-  const rf=flowCls(rSt);
-  ['rPipeMain','rPipe1H','rPipe1V','rPipe2H','rPipe2V'].forEach(id=>setFlow(id,rf));
+  /* ── Per-pump states ── */
+  const sr1=pumpSt(rI1,rI3,rQ1);
+  const sr2=pumpSt(rI1,rI3,rQ2);
+  const scA=pumpSt(cI1,cI3,cQ1);
+  const scB=pumpSt(cI1,cI3,cQ2);
 
-  /* CISTERNA pumps */
-  setPump('pump-cis-A',cSt); setPump('pump-cis-B',cSt);
-  setChipState('chip-cA','chip-cA-s','rt-cA',cSt,prevCisSt,'cA');
-  setChipState('chip-cB','chip-cB-s','rt-cB',cSt,prevCisSt,'cB');
-  ['I1','I2','I3','Q1'].forEach(t=>setIORow('cis',t,S.cis[t],t==='I1'));
-  /* Gravity always flows if I3 */
-  const gravOn=S.cis.I3===1;
-  const gEl=document.getElementById('chip-grav');
-  gEl.className='chip s-'+(gravOn?'green':'gray');
-  document.getElementById('chip-grav-s').textContent=gravOn?'ABIERTO':'CERRADO';
+  /* ── RÍO: pump visuals ── */
+  setPump('pump-rio-1', sr1);
+  setPump('pump-rio-2', sr2);
+  setChip('chip-r1','chip-r1-s', sr1, prev.r1, 'r1');
+  setChip('chip-r2','chip-r2-s', sr2, prev.r2, 'r2');
+
+  /* ── RÍO: IO badges ── */
+  setBadge('rio-I1-b','rio-I1-v', rI1, true);   // I1 = fault → red when ON
+  setBadge('rio-I3-b','rio-I3-v', rI3, false);
+  setBadge('rio-Q1-b','rio-Q1-v', rQ1, false);
+  setBadge('rio-Q2-b','rio-Q2-v', rQ2, false);
+
+  /* ── RÍO: pipe flows ──
+     Each pump drives its own riser.
+     The shared header shows color of the "best active" pump.
+     Header layer 1 = Bomba1 color, layer 2 = Bomba2 color (blended visually). */
+  setFlow('rP1V', fc(sr1));
+  setFlow('rP1H', fc(sr1));
+  setFlow('rP2V', fc(sr2));
+  setFlow('rP2H', fc(sr2));
+  setFlow('rHdr1', fc(sr1));   // Bomba1 contribution to header
+  setFlow('rHdr2', fc(sr2));   // Bomba2 contribution to header (semi-transparent overlay)
+
+  /* ── CISTERNA: pump visuals ── */
+  setPump('pump-cis-A', scA);
+  setPump('pump-cis-B', scB);
+  setChip('chip-cA','chip-cA-s', scA, prev.cA, 'cA');
+  setChip('chip-cB','chip-cB-s', scB, prev.cB, 'cB');
+
+  /* ── CISTERNA: IO badges ── */
+  setBadge('cis-I1-b','cis-I1-v', cI1, true);
+  setBadge('cis-I3-b','cis-I3-v', cI3, false);
+  setBadge('cis-Q1-b','cis-Q1-v', cQ1, false);
+  setBadge('cis-Q2-b','cis-Q2-v', cQ2, false);
+
+  /* ── CISTERNA: gravity drain flows when level is MEDIO or ALTO ── */
+  const tankLvl=(S.cis.Ic===0&&S.cis.In===1)?'error':
+                (S.cis.Ic===0)?'low':(S.cis.In===0)?'med':'high';
+  const gravOn = (tankLvl==='med'||tankLvl==='high');
   setFlow('cPipeGravV', gravOn?'fb':'');
   setFlow('cPipeGravH', gravOn?'fb':'');
-  setFlow('cPipeIn', flowCls(rSt));
-  const cf=flowCls(cSt);
-  ['cPipeToP','cPipeA-in','cPipeA-out','cPipeB-suc','cPipeB-in','cPipeB-out'].forEach(id=>setFlow(id,cf));
+  const grav=document.getElementById('chip-grav');
+  grav.className='chip s-'+(gravOn?'green':'gray');
+  document.getElementById('chip-grav-s').textContent=gravOn?'ABIERTO':'CERRADO';
 
-  /* Cards border */
-  document.getElementById('card-rio').className='scard'+(rSt==='red'?' fault':rSt==='green'?' running':'');
-  document.getElementById('card-cis').className='scard'+(cSt==='red'?' fault':cSt==='green'?' running':'');
+  /* ── CISTERNA: centrifugal pipe flows ──
+     Each pump drives its own suction + discharge.
+     Shared inlet header: layer A + layer B. */
+  setFlow('cHdrA',  fc(scA));
+  setFlow('cHdrB',  fc(scB));
+  setFlow('cPA-in1', fc(scA));
+  setFlow('cPA-in2', fc(scA));
+  setFlow('cPA-out', fc(scA));
+  setFlow('cPB-in1', fc(scB));
+  setFlow('cPB-in2', fc(scB));
+  setFlow('cPB-out', fc(scB));
 
-  /* Tank level */
+  /* ── Inlet to cisterna ← from río pumps ── */
+  setFlow('cPipeIn', fcBest(sr1, sr2));
+
+  /* ── Level renders ── */
   const tankErr=renderTank(S.cis.Ic, S.cis.In);
+  renderRiver(S.rio.Icr);
 
-  /* Metrics */
-  const active=[rSt,rSt,cSt,cSt].filter(s=>s==='green').length;
-  const faults=[rSt,rSt,cSt,cSt].filter(s=>s==='red').length+(tankErr?1:0);
+  /* ── Card border ── */
+  const rFault=sr1==='red'||sr2==='red';
+  const rRun  =sr1==='green'||sr2==='green';
+  const cFault=scA==='red'||scB==='red';
+  const cRun  =scA==='green'||scB==='green';
+  document.getElementById('card-rio').className='scard'+(rFault?' fault':rRun?' running':'');
+  document.getElementById('card-cis').className='scard'+(cFault?' fault':cRun?' running':'');
+
+  /* ── Metrics ── */
+  const allSts=[sr1,sr2,scA,scB];
+  const active=allSts.filter(s=>s==='green').length;
+  const hp  =([sr1,sr2].filter(s=>s==='green').length*20)+([scA,scB].filter(s=>s==='green').length*5);
+  const faults=allSts.filter(s=>s==='red').length+(tankErr?1:0)+(S.rio.Icr===0?1:0);
   document.getElementById('m-active').textContent=active;
-  document.getElementById('m-power').textContent=([rSt,rSt].filter(s=>s==='green').length*20)+([cSt,cSt].filter(s=>s==='green').length*5);
+  document.getElementById('m-power').textContent=hp;
   const fm=document.getElementById('m-faults');
-  fm.textContent=faults;
-  fm.style.color=faults>0?'var(--red)':'var(--txt-hi)';
+  fm.textContent=faults; fm.style.color=faults>0?'var(--red)':'var(--txt-hi)';
 
-  /* Alert */
+  /* ── Alerts ── */
   const bar=document.getElementById('alertbar');
   const spots=[];
-  if(rSt==='red') spots.push('ESTACIÓN RÍO — protección I1 activa');
-  if(cSt==='red') spots.push('ESTACIÓN CISTERNA — protección I1 activa');
-  if(tankErr)     spots.push('CISTERNA — incongruencia de nivel (Ic=0, In=1)');
-  if(spots.length>0){
+  if(sr1==='red')    spots.push('B.SUMERGIBLE 1 — falla I1');
+  if(sr2==='red')    spots.push('B.SUMERGIBLE 2 — falla I1');
+  if(scA==='red')    spots.push('B.CENTRÍFUGA A — falla I1');
+  if(scB==='red')    spots.push('B.CENTRÍFUGA B — falla I1');
+  if(tankErr)        spots.push('CISTERNA — incongruencia nivel (Ic=0, In=1)');
+  if(S.rio.Icr===0)  spots.push('RÍO — nivel bajo en toma (Icr=0)');
+  if(spots.length){
     bar.classList.add('on');
     document.getElementById('alerttxt').textContent='⚠ ALARMA: '+spots.join(' · ');
     document.getElementById('alerttime').textContent=new Date().toLocaleTimeString('es-AR',{hour12:false});
@@ -874,28 +1015,35 @@ function render(){
     bar.classList.remove('on');
   }
 
-  prevRioSt=rSt; prevCisSt=cSt;
+  prev={r1:sr1,r2:sr2,cA:scA,cB:scB};
   updateRuntimes();
 }
 
-/* ══ SCENARIOS ══ */
+/* ═══════════════════════════════════════════
+   SIMULATION SCENARIOS
+═══════════════════════════════════════════ */
 function sc(name){
-  const map={
-    'all-run':   {rio:{I1:0,I2:0,I3:1,Q1:1},cis:{I1:0,I2:0,I3:1,Q1:1,Ic:S.cis.Ic,In:S.cis.In}},
-    'all-fault': {rio:{I1:1,I2:0,I3:0,Q1:0},cis:{I1:1,I2:0,I3:0,Q1:0,Ic:S.cis.Ic,In:S.cis.In}},
-    'standby':   {rio:{I1:0,I2:0,I3:1,Q1:0},cis:{I1:0,I2:0,I3:1,Q1:0,Ic:S.cis.Ic,In:S.cis.In}},
-    'disabled':  {rio:{I1:0,I2:0,I3:0,Q1:0},cis:{I1:0,I2:0,I3:0,Q1:0,Ic:S.cis.Ic,In:S.cis.In}},
-    'mixed':     {rio:{I1:0,I2:0,I3:1,Q1:1},cis:{I1:0,I2:0,I3:1,Q1:0,Ic:S.cis.Ic,In:S.cis.In}},
-    'rio-fault': {rio:{I1:1,I2:0,I3:0,Q1:0},cis:{I1:0,I2:0,I3:1,Q1:1,Ic:S.cis.Ic,In:S.cis.In}},
-    'cis-fault': {rio:{I1:0,I2:0,I3:1,Q1:1},cis:{I1:1,I2:0,I3:0,Q1:0,Ic:S.cis.Ic,In:S.cis.In}},
+  const {Ic,In}=S.cis, {Icr}=S.rio;
+  const m={
+    // Río
+    'r-both':   {rio:{I1:0,I3:1,Q1:1,Q2:1,Icr}, cis:{...S.cis}},
+    'r-b1':     {rio:{I1:0,I3:1,Q1:1,Q2:0,Icr}, cis:{...S.cis}},
+    'r-b2':     {rio:{I1:0,I3:1,Q1:0,Q2:1,Icr}, cis:{...S.cis}},
+    'r-fault':  {rio:{I1:1,I3:0,Q1:0,Q2:0,Icr}, cis:{...S.cis}},
+    'r-standby':{rio:{I1:0,I3:1,Q1:0,Q2:0,Icr}, cis:{...S.cis}},
+    'r-dis':    {rio:{I1:0,I3:0,Q1:0,Q2:0,Icr}, cis:{...S.cis}},
+    // Cisterna
+    'c-both':   {rio:{...S.rio}, cis:{I1:0,I3:1,Q1:1,Q2:1,Ic,In}},
+    'c-A':      {rio:{...S.rio}, cis:{I1:0,I3:1,Q1:1,Q2:0,Ic,In}},
+    'c-B':      {rio:{...S.rio}, cis:{I1:0,I3:1,Q1:0,Q2:1,Ic,In}},
+    'c-fault':  {rio:{...S.rio}, cis:{I1:1,I3:0,Q1:0,Q2:0,Ic,In}},
+    'c-standby':{rio:{...S.rio}, cis:{I1:0,I3:1,Q1:0,Q2:0,Ic,In}},
   };
-  if(map[name]){S=map[name];render();}
+  if(m[name]){ S=m[name]; render(); }
 }
 
-function setLevel(Ic,In){
-  S.cis.Ic=Ic; S.cis.In=In;
-  render();
-}
+function setIcr(v){ S.rio.Icr=v; render(); }
+function setLevel(Ic,In){ S.cis.Ic=Ic; S.cis.In=In; render(); }
 
 render();
 </script>
