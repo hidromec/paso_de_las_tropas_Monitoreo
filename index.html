@@ -1035,24 +1035,61 @@ async function fetchData() {
     console.warn('Worker fetch error:', e.message);
   }
 }
+  
+function resetSystemState() {
+  // Ponemos todos los valores lógicos en 0 o null
+  S.rio = {
+    NIVELRIO: 0,
+    B1AUTORIO: 0, B1MANUALRIO: 0, FALLAB1RIO: 0, MARCHAB1RIO: 0, HSRIOB1: 0,
+    B2AUTORIO: 0, B2MANUALRIO: 0, FALLAB2RIO: 0, MARCHAB2RIO: 0, HSRIOB2: 0
+  };
+  S.cis = {
+    BAAUTO: 0, BAMANUAL: 0, FALLABA: 0, MARCHABA: 0, HSCISA: 0,
+    BBAUTO: 0, BBMANUAL: 0, FALLABB: 0, MARCHABB: 0, HSCISB: 0,
+    Ic: 0, In: 0
+  };
 
-fetchData();
-setInterval(fetchData, 15000); // refresca cada 15 segundos
-
-function setRemoteMode(mode) {
-  // mode: 'manual', 'auto', 'off'
-  var modes = ['manual','auto','off'];
-  modes.forEach(function(m) {
-    var el = document.getElementById('rm-' + m);
-    if (!el) return;
-    el.className = 'remote-mode';
-    if (m === mode) {
-      el.className = 'remote-mode active rm-' + m;
-    }
-  });
+  // Forzamos que las temperaturas digan "OFFLINE"
+  document.getElementById('temp-rio').textContent = 'OFFLINE';
+  document.getElementById('temp-cis').textContent = 'OFFLINE';
+  
 }
-// Default state on load
-setRemoteMode('off');
+  
+fetchData();
+  async function fetchData() {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+
+  try {
+    const res = await fetch(WORKER_URL);
+    if (!res.ok) throw new Error("Error de Servidor");
+    
+    const data = await res.json();
+    
+    // Si el Worker responde pero dice que hay error de base de datos
+    if (data.error || !data.temps) {
+      throw new Error("Datos no disponibles");
+    }
+
+    // Si llegamos aquí, hay datos frescos
+    dot.style.background = "var(--green)";
+    dot.style.box-shadow = "0 0 8px var(--green)";
+    txt.innerText = "EN LÍNEA";
+    txt.style.color = "var(--txt-md)";
+    
+    applyWorkerData(data);
+
+  } catch(e) {
+    // Si algo falla, limpiamos la pantalla
+    dot.style.background = "var(--red)";
+    dot.style.box-shadow = "0 0 8px var(--red)";
+    txt.innerText = "SISTEMA OFFLINE";
+    txt.style.color = "var(--red)";
+
+    console.warn('Falla de comunicación, reseteando panel...');
+    resetSystemState(); 
+  }
+}
 
 </script>
 </body>
