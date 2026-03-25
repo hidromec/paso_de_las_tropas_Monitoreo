@@ -1052,7 +1052,22 @@ async function fetchData() {
     txt.style.color = "var(--red)";
 
     resetSystemState();
+function setRemoteMode(modo) {
+  const el = document.getElementById('modo-remoto');
 
+  if (!el) return;
+
+  if (modo === 'manual') {
+    el.textContent = 'MANUAL';
+    el.style.color = 'orange';
+  } else if (modo === 'auto') {
+    el.textContent = 'AUTO';
+    el.style.color = 'lime';
+  } else {
+    el.textContent = 'OFF';
+    el.style.color = 'gray';
+  }
+}
     console.warn('Error:', e.message);
     return null;
   }
@@ -1110,22 +1125,7 @@ function controlarOffline(data) {
 // ⏱️ LOOP
 setInterval(fetchData, 5000);
 fetchData();
-function setRemoteMode(modo) {
-  const el = document.getElementById('modo-remoto');
 
-  if (!el) return;
-
-  if (modo === 'manual') {
-    el.textContent = 'MANUAL';
-    el.style.color = 'orange';
-  } else if (modo === 'auto') {
-    el.textContent = 'AUTO';
-    el.style.color = 'lime';
-  } else {
-    el.textContent = 'OFF';
-    el.style.color = 'gray';
-  }
-}  
 </script>
 
 </body>
