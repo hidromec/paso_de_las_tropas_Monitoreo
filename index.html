@@ -1038,6 +1038,23 @@ function applyWorkerData(data) {
 }
 </script>
 <script> 
+function setRemoteMode(modo) {
+  const el = document.getElementById('modo-remoto');
+  if (!el) return;
+
+  if (modo === 'manual') {
+    el.textContent = 'MANUAL';
+    el.style.color = 'orange';
+  } else if (modo === 'auto') {
+    el.textContent = 'AUTO';
+    el.style.color = 'lime';
+  } else {
+    el.textContent = 'OFF';
+    el.style.color = 'gray';
+  }
+}  
+</script> 
+<script> 
 async function fetchData() {
   const dot = document.getElementById('status-dot');
   const txt = document.getElementById('status-text');
