@@ -974,6 +974,24 @@ function tempColor(el, val) {
   if (val >= 75)      el.classList.add('hot');
   else if (val >= 60) el.classList.add('warn');
 }
+  function setRemoteMode(modo) {
+  const el = document.getElementById('modo-remoto');
+  if (!el) return;
+
+  switch (modo) {
+    case 'manual':
+      el.textContent = 'MANUAL';
+      el.style.color = 'orange';
+      break;
+    case 'auto':
+      el.textContent = 'AUTO';
+      el.style.color = 'lime';
+      break;
+    default:
+      el.textContent = 'OFF';
+      el.style.color = 'gray';
+  }
+}
 
 function applyWorkerData(data) {
   /* ── Temperaturas ── */
