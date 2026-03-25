@@ -1019,145 +1019,98 @@ function applyWorkerData(data) {
   render();
 }
 
+<script>
 async function fetchData() {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+
   try {
     const res = await fetch('https://scada-proxy.monitoreonono.workers.dev/data');
     if (!res.ok) throw new Error(res.status);
 
     const data = await res.json();
-    if (data.error) throw new Error(data.error);
+    if (data.error || !data.temps) throw new Error("Datos inválidos");
+
+    // 🟢 ONLINE
+    dot.style.background = "var(--green)";
+    dot.style.boxShadow = "0 0 8px var(--green)";
+    txt.innerText = "EN LÍNEA";
+    txt.style.color = "var(--txt-md)";
 
     applyWorkerData(data);
 
-    return data; // 🔴 ESTA LÍNEA SOLUCIONA TODO
+    // 🔴 CONTROL OFFLINE
+    controlarOffline(data);
+
+    return data;
 
   } catch(e) {
-    const elRio = document.getElementById('temp-rio');
-    const elCis = document.getElementById('temp-cis');
+    // 🔴 OFFLINE TOTAL
+    dot.style.background = "var(--red)";
+    dot.style.boxShadow = "0 0 8px var(--red)";
+    txt.innerText = "SISTEMA OFFLINE";
+    txt.style.color = "var(--red)";
 
-    elRio.textContent = 'ERR';
-    elRio.classList.add('warn');
+    resetSystemState();
 
-    elCis.textContent = 'ERR';
-    elCis.classList.add('warn');
-
-    console.warn('Worker fetch error:', e.message);
-
-    return null; // 🔴 también importante
+    console.warn('Error:', e.message);
+    return null;
   }
 }
+
 function resetSystemState() {
-  // Ponemos todos los valores lógicos en 0 o null
   S.rio = {
     NIVELRIO: 0,
     B1AUTORIO: 0, B1MANUALRIO: 0, FALLAB1RIO: 0, MARCHAB1RIO: 0, HSRIOB1: 0,
     B2AUTORIO: 0, B2MANUALRIO: 0, FALLAB2RIO: 0, MARCHAB2RIO: 0, HSRIOB2: 0
   };
+
   S.cis = {
     BAAUTO: 0, BAMANUAL: 0, FALLABA: 0, MARCHABA: 0, HSCISA: 0,
     BBAUTO: 0, BBMANUAL: 0, FALLABB: 0, MARCHABB: 0, HSCISB: 0,
     Ic: 0, In: 0
   };
 
-  // Forzamos que las temperaturas digan "OFFLINE"
   document.getElementById('temp-rio').textContent = 'OFFLINE';
   document.getElementById('temp-cis').textContent = 'OFFLINE';
-  
 }
-  
-fetchData();
-  async function fetchData() {
-  const dot = document.getElementById('status-dot');
-  const txt = document.getElementById('status-text');
 
-  try {
-    const res = await fetch('https://scada-proxy.monitoreonono.workers.dev/data');
-    if (!res.ok) throw new Error("Error de Servidor");
-    
-    const data = await res.json();
-    
-    // Si el Worker responde pero dice que hay error de base de datos
-    if (data.error || !data.temps) {
-      throw new Error("Datos no disponibles");
-    }
+// 🔴 CONTROL DE RASPBERRY CAÍDA
+function controlarOffline(data) {
+  const STALE_LIMIT = 60;
+  const now = new Date();
 
-    // Si llegamos aquí, hay datos frescos
-    dot.style.background = "var(--green)";
-    dot.style.box-shadow = "0 0 8px var(--green)";
-    txt.innerText = "EN LÍNEA";
-    txt.style.color = "var(--txt-md)";
-    
-    applyWorkerData(data);
-
-  } catch(e) {
-    // Si algo falla, limpiamos la pantalla
-    dot.style.background = "var(--red)";
-    dot.style.box-shadow = "0 0 8px var(--red)";
-    txt.innerText = "SISTEMA OFFLINE";
-    txt.style.color = "var(--red)";
-
-    console.warn('Falla de comunicación, reseteando panel...');
-    resetSystemState(); 
+  function estaCaido(ts, temp) {
+    if (!ts || temp == null) return true;
+    return ((now - new Date(ts)) / 1000) > STALE_LIMIT;
   }
-}
 
-</script>
+  const rioCaido = estaCaido(data.rio_time, data.temps?.rio);
+  const cisCaido = estaCaido(data.cis_time, data.temps?.cis);
 
-<script>
-// === LOGICA OFFLINE AGREGADA ===
-const STALE_LIMIT = 60;
-
-function setOfflineSection(section) {
-  if (section === 'rio') {
+  // RIO
+  if (rioCaido) {
     const el = document.getElementById('temp-rio');
     if (el) el.textContent = 'OFFLINE';
-    const card = document.getElementById('card-rio');
-    if (card) card.classList.add('offline');
+    document.getElementById('card-rio')?.classList.add('offline');
+  } else {
+    document.getElementById('card-rio')?.classList.remove('offline');
   }
-  if (section === 'cis') {
+
+  // CIS
+  if (cisCaido) {
     const el = document.getElementById('temp-cis');
     if (el) el.textContent = 'OFFLINE';
-    const card = document.getElementById('card-cis');
-    if (card) card.classList.add('offline');
+    document.getElementById('card-cis')?.classList.add('offline');
+  } else {
+    document.getElementById('card-cis')?.classList.remove('offline');
   }
 }
 
-function resetOfflineUI() {
-  const rio = document.getElementById('card-rio');
-  const cis = document.getElementById('card-cis');
-  if (rio) rio.classList.remove('offline');
-  if (cis) cis.classList.remove('offline');
-}
-
-// Hook simple (no rompe nada)
-const _oldFetch = window.fetchData;
-if (_oldFetch) {
-  window.fetchData = async function() {
-    const data = await _oldFetch();
-
-    try {
-      const now = new Date();
-
-      const rioTime = new Date(data.rio_time);
-      const cisTime = new Date(data.cis_time);
-
-      const diffRio = (now - rioTime) / 1000;
-      const diffCis = (now - cisTime) / 1000;
-
-      resetOfflineUI();
-
-      if (!data.temps?.rio || diffRio > STALE_LIMIT) {
-        setOfflineSection('rio');
-      }
-
-      if (!data.temps?.cis || diffCis > STALE_LIMIT) {
-        setOfflineSection('cis');
-      }
-    } catch(e){}
-
-    return data;
-  }
-}
+// ⏱️ LOOP
+setInterval(fetchData, 5000);
+fetchData();
+</script>
 </script>
 
 </body>
