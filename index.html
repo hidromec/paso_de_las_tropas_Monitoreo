@@ -1071,7 +1071,7 @@ fetchData();
   const txt = document.getElementById('status-text');
 
   try {
-    const res = await fetch(WORKER_URL);
+    const res = await fetch('https://scada-proxy.monitoreonono.workers.dev/data');
     if (!res.ok) throw new Error("Error de Servidor");
     
     const data = await res.json();
