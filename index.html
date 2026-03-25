@@ -1023,19 +1023,29 @@ async function fetchData() {
   try {
     const res = await fetch('https://scada-proxy.monitoreonono.workers.dev/data');
     if (!res.ok) throw new Error(res.status);
+
     const data = await res.json();
     if (data.error) throw new Error(data.error);
+
     applyWorkerData(data);
+
+    return data; // 🔴 ESTA LÍNEA SOLUCIONA TODO
+
   } catch(e) {
-    // Si falla el Worker, muestra ERR en temperaturas pero mantiene el último estado
     const elRio = document.getElementById('temp-rio');
     const elCis = document.getElementById('temp-cis');
-    elRio.textContent = 'ERR'; elRio.classList.add('warn');
-    elCis.textContent = 'ERR'; elCis.classList.add('warn');
+
+    elRio.textContent = 'ERR';
+    elRio.classList.add('warn');
+
+    elCis.textContent = 'ERR';
+    elCis.classList.add('warn');
+
     console.warn('Worker fetch error:', e.message);
+
+    return null; // 🔴 también importante
   }
 }
-  
 function resetSystemState() {
   // Ponemos todos los valores lógicos en 0 o null
   S.rio = {
