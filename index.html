@@ -1021,7 +1021,7 @@ function applyWorkerData(data) {
 
 async function fetchData() {
   try {
-    const res = await fetch(https://scada-proxy.monitoreonono.workers.dev/data);
+    const res = await fetch('https://scada-proxy.monitoreonono.workers.dev/data');
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
