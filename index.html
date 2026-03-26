@@ -1059,12 +1059,12 @@ function applyWorkerData(data) {
     S.rio.NIVELRIO      = r.NIVELRIO        ?? null;
     S.rio.B1AUTORIO     = r.B1AUTORIO       ?? null;   // FIX: era r.B2AUTORIO (mapeo cruzado)
     S.rio.B1MANUALRIO   = r.B1MANUALRIO     ?? null;
-    S.rio.FALLAB1RIO    = r['FALLA B1RIO']  ?? null;
+    S.rio.FALLAB1RIO = r['FALLA B1RIO'] != null ? (r['FALLA B1RIO'] === 0 ? 1 : 0) : null;
+    S.rio.FALLAB2RIO = r['FALLA B2RIO'] != null ? (r['FALLA B2RIO'] === 0 ? 1 : 0) : null;
     S.rio.MARCHAB1RIO   = r.MARCHAB1RIO     ?? null;
     S.rio.HSRIOB1       = r.HSRIOB1         ?? S.rio.HSRIOB1;
     S.rio.B2AUTORIO     = r.B2AUTORIO       ?? null;   // FIX: campo faltante
     S.rio.B2MANUALRIO   = r.B2MANUALRIO     ?? null;
-    S.rio.FALLAB2RIO    = r['FALLA B2RIO']  ?? null;
     S.rio.MARCHAB2RIO   = r.MARCHAB2RIO     ?? null;
     S.rio.HSRIOB2       = r.HSRIOB2         ?? S.rio.HSRIOB2;
   }
@@ -1089,7 +1089,7 @@ function applyWorkerData(data) {
   }
 
   // Modo Remoto
-  if (data.modoRemoto) setRemoteMode(data.modoRemoto);
+  if (data.modoRemoto != null) setRemoteMode(data.modoRemoto);
 
   render();
 }
@@ -1114,16 +1114,15 @@ async function fetchData() {
 fetchData();
 setInterval(fetchData, 15000); // refresca cada 15 segundos
 
-function setRemoteMode(mode) {
-  // mode: 'manual', 'auto', 'off'
-  var modes = ['manual','auto','off'];
-  modes.forEach(function(m) {
+  function setRemoteMode(mode) {
+  // InfluxDB envía: 1=manual, 2=auto — cualquier otro valor = sin funcionar
+  const resolved = mode === 1 || mode === 'manual' ? 'manual'
+                 : mode === 2 || mode === 'auto'   ? 'auto'
+                 : 'off';
+  ['manual','auto','off'].forEach(function(m) {
     var el = document.getElementById('rm-' + m);
     if (!el) return;
-    el.className = 'remote-mode';
-    if (m === mode) {
-      el.className = 'remote-mode active rm-' + m;
-    }
+    el.className = m === resolved ? 'remote-mode active rm-' + m : 'remote-mode';
   });
 }
 // Default state on load
