@@ -1064,7 +1064,7 @@ function applyWorkerData(data) {
   const elRio = document.getElementById('temp-rio');
   const elCis = document.getElementById('temp-cis');
   const tRio = data.temps?.rio ?? data.rio?.TEMP_RPI ?? lastTemp.rio;
-  const tCis = data.temps?.cis ?? data.cis?.TEMP_RPI ?? lastTemp.cis;
+  const tCis = data.temps?.cis ?? data.cis?.TEMP_RPI2 ?? lastTemp.cis;
   showTemp(elRio, tRio);
   showTemp(elCis, tCis);
 
@@ -1138,8 +1138,8 @@ function applyWorkerData(data) {
   if (data.cis) {
     cBuf.NIVEL_BAJO_CIST = S.cis.Ic;
     cBuf.NIVEL_ALTO_CIST = S.cis.In;
-    const tCis = data.cis?.TEMP_RPI ?? data.temps?.cis ?? null;
-    if (tCis != null) { cBuf.TEMP_RPI = tCis; lastTemp.cis = tCis; }
+    const tCis = data.cis?.TEMP_RPI2 ?? data.temps?.cis ?? null;
+    if (tCis != null) { cBuf.TEMP_RPI2 = tCis; lastTemp.cis = tCis; }
   }
   pushToBuffer('cis', cBuf);
 
@@ -1217,7 +1217,7 @@ async function fetchHistoryFromInflux() {
       {
         key: 'cis',
         measurement: 'pasodelastropascisterna',
-        fields: ['NIVEL_BAJO_CIST','NIVEL_ALTO_CIST','TEMP_RPI']
+        fields: ['NIVEL_BAJO_CIST','NIVEL_ALTO_CIST','TEMP_RPI2']
       }
     ];
 
